@@ -11,6 +11,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -29,6 +31,12 @@
                 android:textSize="@dimen/text_size_1" />
 
         </com.google.android.material.appbar.MaterialToolbar>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/soft_gray" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -56,13 +64,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="5"
-                        android:hint="검색어를 입력하세요.">
+                        android:hint="검색어를 입력하세요."
+                        app:endIconMode="clear_text">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputEditTextHomeMain"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:backgroundTint="#FFFFFF" />
+                            android:backgroundTint="#FFFFFF"
+                            android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
@@ -113,6 +123,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@drawable/add_24px"
+        app:backgroundTint="@color/mainColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

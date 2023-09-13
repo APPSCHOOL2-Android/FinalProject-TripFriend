@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.accompany.AccompanyRegisterFragment3">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbarRegister3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.TripFriend.Toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="동행하기 등록"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <com.kofigyan.stateprogressbar.StateProgressBar
+        android:id="@+id/progressBarRegister3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:spb_animateToCurrentProgressState="true"
+        app:spb_checkStateCompleted="true"
+        app:spb_currentStateNumber="three"
+        app:spb_maxStateNumber="three"
+        app:spb_stateBackgroundColor="@color/mainColor"
+        app:spb_stateForegroundColor="@color/highLightColor"
+        app:spb_stateLineThickness="7dp"
+        app:spb_stateNumberBackgroundColor="@color/white"
+        app:spb_stateNumberForegroundColor="@color/white"
+        app:spb_stateSize="40dp"
+        app:spb_stateTextSize="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="여행 카테고리"
+                    android:textSize="@dimen/text_size_1"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category1"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="축제"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/festival_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category2"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="맛집 탐방"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/breaktime_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category3"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="휴양"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/forest_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category4"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="관광"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/tour_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category5"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="자연"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/forest_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category6"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="쇼핑"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/shopping_bag_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category7"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="액티비티"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/activity_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category8"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="사진촬영"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/photo_camera_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipRegister3Category9"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="스포츠"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/activity_20px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="성별"
+                    android:textSize="@dimen/text_size_1"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGender1"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="남자"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/man_24px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp"
+                        app:ensureMinTouchTargetSize="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipGender2"
+                        style="@style/custom_suggestion_chip_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="여자"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="@dimen/text_size_3"
+                        app:chipIcon="@drawable/woman_24px"
+                        app:chipIconEnabled="true"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp"
+                        app:ensureMinTouchTargetSize="true" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutRegister3Hashtag"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:counterEnabled="true"
+                app:counterMaxLength="300">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextRegister3Hashtag"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:hint="해시태그를 작성해주세요."
+                    android:inputType="text|textMultiLine"
+                    android:maxHeight="200dp"
+                    android:maxLength="300"
+                    android:textSize="@dimen/text_size_2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonAccompanyRegister3ToSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/border2"
+                android:paddingLeft="30dp"
+                android:paddingTop="8dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="8dp"
+                android:text="완료하기"
+                android:textSize="@dimen/text_size_2" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

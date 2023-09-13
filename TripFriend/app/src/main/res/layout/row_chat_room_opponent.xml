@@ -12,11 +12,11 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageViewRowChatRoomOpponentImage"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewRowChatRoomOpponent"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:srcCompat="@mipmap/ic_trip_friend" />
+            android:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/textViewRowChatRoomOpponentName"

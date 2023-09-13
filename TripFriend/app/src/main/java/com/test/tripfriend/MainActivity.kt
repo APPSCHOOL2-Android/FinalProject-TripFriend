@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment1
+import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment2
+import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment3
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.home.HomeListFragment
 import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
@@ -50,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         val MY_APP_SETTING_FRAGMENT="MyAppSettingFragment"
         val MODIFY_MY_INFO_FRAGMENT="ModifyMyInfoFragment"
         val ACCOMPANY_REGISTER_FRAGMENT1 = "AccompanyRegisterFragment1"
+        val ACCOMPANY_REGISTER_FRAGMENT2 = "AccompanyRegisterFragment2"
+        val ACCOMPANY_REGISTER_FRAGMENT3 = "AccompanyRegisterFragment3"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
         val READ_POST_FRAGMENT = "ReadPostFragment"
@@ -124,6 +128,8 @@ class MainActivity : AppCompatActivity() {
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
             ACCOMPANY_REGISTER_FRAGMENT1 -> AccompanyRegisterFragment1()
+            ACCOMPANY_REGISTER_FRAGMENT2 -> AccompanyRegisterFragment2()
+            ACCOMPANY_REGISTER_FRAGMENT3 -> AccompanyRegisterFragment3()
             MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
             MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()

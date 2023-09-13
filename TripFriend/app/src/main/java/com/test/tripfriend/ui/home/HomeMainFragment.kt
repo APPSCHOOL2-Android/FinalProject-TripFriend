@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
@@ -16,6 +18,9 @@ import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class HomeMainFragment : Fragment() {
     lateinit var fragmentHomeMainBinding: FragmentHomeMainBinding
@@ -65,6 +70,24 @@ class HomeMainFragment : Fragment() {
 //
 //                            dateRangePicker.show()
 //                        }
+
+                        // 데이트 피커
+                        dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(object :
+                            CalendarListener {
+                            override fun onFirstDateSelected(startDate: Calendar) {
+                                val date = startDate.time
+                                val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                                val startDate = startDate.time
+                                val endDate = endDate.time
+                                val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
                     }
 
                     builder.show()

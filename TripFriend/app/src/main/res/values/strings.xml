@@ -26,4 +26,27 @@
         2. 사용자 데이터로 저장되는 닉네임, MBTI, 프로필 사진, 동행 후기 내용을 서비스 내의 모든 이용자에게 정보 제공의 목적으로 제공합니다.
 
     </string>
+
+    <string name="cdrp_mon">월</string>
+    <string name="cdrp_tue">화</string>
+    <string name="cdrp_wed">수</string>
+    <string name="cdrp_thu">목</string>
+    <string name="cdrp_fri">금</string>
+    <string name="cdrp_sat">토</string>
+    <string name="cdrp_sun">일</string>
+
+    <string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array>
+
+    <string name="cancel">취소</string>
+    <string name="done">완료</string>
+    <string name="title_time_picker">날짜 선택</string>
+    <string name="select_time">날짜 선택</string>
 </resources>
