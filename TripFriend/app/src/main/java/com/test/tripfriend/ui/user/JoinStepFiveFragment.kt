@@ -32,6 +32,7 @@ class JoinStepFiveFragment : Fragment() {
         fragmentJoinStepFiveBinding.run {
             materialToolbarJoinStepFive.run{
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationIconTint(Color.BLACK)
                 setNavigationOnClickListener {
                     loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
                 }
