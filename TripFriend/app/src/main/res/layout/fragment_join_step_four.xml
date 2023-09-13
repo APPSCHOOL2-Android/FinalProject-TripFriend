@@ -22,12 +22,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/soft_gray" />
-
     <com.kofigyan.stateprogressbar.StateProgressBar
         android:id="@+id/progressBarJoinStepFour"
         android:layout_width="match_parent"
@@ -100,19 +94,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:cursorVisible="true"
+                    android:fontFamily="@font/font"
                     android:gravity="center_vertical"
                     android:inputType="number"
-                    android:paddingBottom="20dp" />
+                    android:paddingBottom="20dp"
+                    android:textSize="@dimen/text_size_2" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/buttonJoinStepFourAuth"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="65dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/font"
                 android:text="인증요청"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_3"
+                app:cornerRadius="5dp"
+                app:strokeColor="@color/mainColor" />
 
         </LinearLayout>
 
@@ -142,9 +144,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
+                android:fontFamily="@font/font"
                 android:gravity="center_vertical"
                 android:inputType="number"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:textSize="@dimen/text_size_2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -154,7 +158,9 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            android:fontFamily="@font/font"
             android:text="다음"
+            android:textAppearance="@style/Theme.App.Medium"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

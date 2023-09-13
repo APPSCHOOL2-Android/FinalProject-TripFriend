@@ -23,12 +23,6 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/soft_gray" />
-
     <com.kofigyan.stateprogressbar.StateProgressBar
         android:id="@+id/progressBarJoinStepOne"
         android:layout_width="match_parent"
@@ -91,9 +85,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
+                android:fontFamily="@font/font"
                 android:gravity="center_vertical"
                 android:inputType="text|textEmailAddress"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:textSize="@dimen/text_size_2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -174,7 +170,9 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="32dp"
+            android:fontFamily="@font/font"
             android:text="다음"
+            android:textAppearance="@style/Theme.App.Medium"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

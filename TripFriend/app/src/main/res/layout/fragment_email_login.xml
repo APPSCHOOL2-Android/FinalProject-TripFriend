@@ -26,15 +26,6 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/soft_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbarEmailLogin" />
-
     <TextView
         android:id="@+id/textViewEmailLogin"
         android:layout_width="match_parent"
@@ -48,7 +39,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@+id/materialToolbarEmailLogin" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutEmaiLoginId"
@@ -76,9 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
+            android:fontFamily="@font/font"
             android:gravity="center_vertical"
             android:inputType="text|textEmailAddress"
-            android:paddingBottom="20dp" />
+            android:paddingBottom="20dp"
+            android:textSize="@dimen/text_size_2" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -107,22 +100,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
+            android:fontFamily="@font/font"
             android:gravity="center_vertical"
             android:inputType="text|textPassword"
-            android:paddingBottom="20dp" />
+            android:paddingBottom="20dp"
+            android:textAppearance="@style/Theme.App.Medium" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonEmailLoginSubmit"
-        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
+        android:fontFamily="@font/font"
         android:text="로그인"
+        android:textAppearance="@style/Theme.App.Medium"
         android:textColor="#000000"
-        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
