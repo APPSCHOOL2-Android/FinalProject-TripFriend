@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background_image"
+    android:clickable="true"
     android:orientation="vertical"
     tools:context=".ui.user.LoginMainFragment">
 
@@ -17,68 +18,79 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewLoginMainSubTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="트립 친구"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLoginMainTitle"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/buttonLoginMainEmailLogin"
-        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/font"
         android:text="이메일 로그인"
         android:textColor="#000000"
-        app:cornerRadius="50dp" />
+        android:textSize="@dimen/text_size_2"
+        app:icon="@drawable/mail"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLoginMainSubTitle" />
 
     <Button
         android:id="@+id/buttonLoginMainKakaoLogin"
-        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FDE35E"
+        android:fontFamily="@font/font"
         android:text="카카오 로그인"
         android:textColor="#000000"
-        app:cornerRadius="50dp" />
+        android:textSize="@dimen/text_size_2"
+        app:icon="@drawable/kakao_talk"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginMainEmailLogin" />
 
     <Button
         android:id="@+id/buttonLoginMainNaverLogin"
-        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:backgroundTint="#54DF35"
+        android:fontFamily="@font/font"
         android:text="네이버 로그인"
         android:textColor="#000000"
-        app:cornerRadius="50dp" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="30dp"
-        android:background="?android:attr/listDivider" />
+        android:textSize="@dimen/text_size_2"
+        app:icon="@drawable/naver_icon"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginMainKakaoLogin" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textView4"
@@ -114,4 +126,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
