@@ -32,6 +32,7 @@ class TripMainFragment : Fragment() {
 
         fragmentTripMainBinding.run {
             materialToolbarTripMain.run {
+
                 setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.menu_item_notification -> {

@@ -255,10 +255,9 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -271,7 +270,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/font"
-                        android:text="         DM         "
+                        android:text="        DM        "
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
@@ -307,6 +306,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
                     android:fontFamily="@font/font"
                     android:text="동행 리뷰 남기기"
                     android:textColor="#000000"

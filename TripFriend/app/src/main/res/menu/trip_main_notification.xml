@@ -5,6 +5,7 @@
     <item
         android:id="@+id/menu_item_notification"
         android:icon="@drawable/notifications_20px"
+        android:iconTint="#EFD809"
         android:title="알림"
         app:showAsAction="always" />
 </menu>

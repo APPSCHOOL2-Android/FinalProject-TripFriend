@@ -93,11 +93,40 @@ class ReviewFragment : Fragment() {
                             ) {
                                 textViewReviewScore.text = "${progress}/10"
                             }
-
                             override fun onStartTrackingTouch(seekBar: SeekBar?){}
                             override fun onStopTrackingTouch(seekBar: SeekBar?){
                             }
                         })
+                    }
+                    chipReview1.setOnClickListener {
+                        chipReview2.isChecked = false
+                    }
+                    chipReview2.setOnClickListener {
+                        chipReview1.isChecked = false
+                    }
+                    chipReview3.setOnClickListener {
+                        chipReview4.isChecked = false
+                    }
+                    chipReview4.setOnClickListener {
+                        chipReview3.isChecked = false
+                    }
+                    chipReview5.setOnClickListener {
+                        chipReview6.isChecked = false
+                    }
+                    chipReview6.setOnClickListener {
+                        chipReview5.isChecked = false
+                    }
+                    chipReview7.setOnClickListener {
+                        chipReview8.isChecked = false
+                    }
+                    chipReview8.setOnClickListener {
+                        chipReview7.isChecked = false
+                    }
+                    chipReview9.setOnClickListener {
+                        chipReview10.isChecked = false
+                    }
+                    chipReview10.setOnClickListener {
+                        chipReview9.isChecked = false
                     }
                 }
             }

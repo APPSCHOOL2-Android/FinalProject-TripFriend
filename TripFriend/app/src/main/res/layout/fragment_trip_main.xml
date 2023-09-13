@@ -9,10 +9,10 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbarTripMain"
-        style="@style/Theme.TripFriend.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:menu="@menu/trip_main_notification">
 
         <TextView
