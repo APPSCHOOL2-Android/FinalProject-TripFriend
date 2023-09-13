@@ -243,36 +243,45 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:paddingLeft="10dp">
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipGender1"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="남자"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/man_24px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp"
+                            app:ensureMinTouchTargetSize="true" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipGender1"
-                        style="@style/custom_suggestion_chip_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="남자"
-                        android:textColorHighlight="@color/highLightColor"
-                        android:textSize="@dimen/text_size_3"
-                        app:chipIcon="@drawable/man_24px"
-                        app:chipIconEnabled="true"
-                        app:chipStrokeColor="@color/highLightColor"
-                        app:chipStrokeWidth="1dp"
-                        app:ensureMinTouchTargetSize="true" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipGender2"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="여자"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/woman_24px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp"
+                            app:ensureMinTouchTargetSize="true" />
+                    </com.google.android.material.chip.ChipGroup>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipGender2"
-                        style="@style/custom_suggestion_chip_style"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="여자"
-                        android:textColorHighlight="@color/highLightColor"
-                        android:textSize="@dimen/text_size_3"
-                        app:chipIcon="@drawable/woman_24px"
-                        app:chipIconEnabled="true"
-                        app:chipStrokeColor="@color/highLightColor"
-                        app:chipStrokeWidth="1dp"
-                        app:ensureMinTouchTargetSize="true" />
+
+
 
                 </LinearLayout>
             </LinearLayout>

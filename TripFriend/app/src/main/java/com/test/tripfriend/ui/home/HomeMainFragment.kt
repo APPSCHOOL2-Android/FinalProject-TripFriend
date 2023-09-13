@@ -151,10 +151,10 @@ class HomeMainFragment : Fragment() {
                 val a1 = ArrayAdapter(
                     mainActivity,
                     // Spinner가 접혀있을 때 모양
-                    android.R.layout.simple_spinner_item,
+                    R.layout.spinner_row,
                     spinnerList
                 )
-                a1.setDropDownViewResource(android.R.layout.simple_spinner_item)
+                a1.setDropDownViewResource(R.layout.spinner_row)
                 adapter = a1
 
                 // Spinner의 항목을 코드로 선택한다.
