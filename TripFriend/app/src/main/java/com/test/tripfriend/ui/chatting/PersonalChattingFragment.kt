@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChattingBinding
 import com.test.tripfriend.databinding.RowChattingPersonalBinding

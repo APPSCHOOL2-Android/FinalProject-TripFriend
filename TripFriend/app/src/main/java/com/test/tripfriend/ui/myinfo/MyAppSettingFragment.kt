@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentMyAppSettingBinding
 
 class MyAppSettingFragment : Fragment() {
     lateinit var fragmentMyAppSettingBinding:FragmentMyAppSettingBinding
-    lateinit var mainActivity:MainActivity
+    lateinit var mainActivity: MainActivity
     lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(

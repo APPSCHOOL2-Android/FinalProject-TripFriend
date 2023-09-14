@@ -15,7 +15,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding

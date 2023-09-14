@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentHomeListBinding
 import com.test.tripfriend.databinding.RowHomeListBinding
 

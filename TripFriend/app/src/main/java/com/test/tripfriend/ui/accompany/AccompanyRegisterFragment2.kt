@@ -18,7 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister2Binding
 import java.text.SimpleDateFormat
 import java.util.Calendar

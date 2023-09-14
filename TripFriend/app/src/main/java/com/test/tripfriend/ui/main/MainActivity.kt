@@ -1,4 +1,4 @@
-package com.test.tripfriend
+package com.test.tripfriend.ui.main
 
 import android.os.Bundle
 import android.os.SystemClock
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment1
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment2
@@ -130,12 +131,12 @@ class MainActivity : AppCompatActivity() {
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             NOTIFICATION_FRAGMENT -> NotificationFragment()
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
-            MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
+            MY_ACCOMPANY_INFO_FRAGMENT ->MyAccompanyInfoFragment()
             ACCOMPANY_REGISTER_FRAGMENT1 -> AccompanyRegisterFragment1()
             ACCOMPANY_REGISTER_FRAGMENT2 -> AccompanyRegisterFragment2()
             ACCOMPANY_REGISTER_FRAGMENT3 -> AccompanyRegisterFragment3()
-            MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
-            MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
+            MY_APP_SETTING_FRAGMENT ->MyAppSettingFragment()
+            MODIFY_MY_INFO_FRAGMENT ->ModifyMyInfoFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
             GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()

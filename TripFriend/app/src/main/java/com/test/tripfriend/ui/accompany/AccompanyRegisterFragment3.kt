@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
-import com.test.tripfriend.MainActivity
+import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
 
 class AccompanyRegisterFragment3 : Fragment() {
