@@ -89,7 +89,9 @@ class MyAppSettingFragment : Fragment() {
                     setMessage("현재 로그인 된 계정에서 로그아웃 됩니다")
                     setNegativeButton("취소", null)
                     setPositiveButton("로그아웃"){ dialogInterface: DialogInterface, i: Int ->
+                        //로그인 된 정보 지우기
 
+                        //화면 전환
                     }
                 }
                 builder.show()
@@ -102,7 +104,11 @@ class MyAppSettingFragment : Fragment() {
                     setMessage("회원탈퇴를 하시면 저장된 모든 정보가 삭제되며 삭제된 정보는 복구할 수 없습니다.")
                     setNegativeButton("취소", null)
                     setPositiveButton("회원탈퇴"){ dialogInterface: DialogInterface, i: Int ->
+                        //서버에 저장된 회원 정보 삭제
+                        userRepository.deleteTargetUserData(userDocumentId)
+                        //로그인 된 정보 지우기
 
+                        //화면 전환
                     }
                     show()
                 }

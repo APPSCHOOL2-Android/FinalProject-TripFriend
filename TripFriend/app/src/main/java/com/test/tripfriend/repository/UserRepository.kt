@@ -47,4 +47,12 @@ class UserRepository {
             .document(documentId)
             .update("userChatNotification",chatNotificationState).await()
     }
+
+    fun deleteTargetUserData(documentId: String){
+        val firestore = Firebase.firestore
+
+        firestore.collection("User")
+            .document(documentId)
+            .delete()
+    }
 }
