@@ -48,15 +48,17 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
+                app:boxCornerRadiusBottomEnd="0dp"
+                app:boxCornerRadiusBottomStart="0dp"
+                app:boxCornerRadiusTopEnd="0dp"
+                app:boxCornerRadiusTopStart="0dp"
                 android:transitionGroup="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextPersonalChatRoomSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_box"
+                    android:background="@drawable/border_chat"
                     android:maxLength="300"
                     android:inputType="textMultiLine|textNoSuggestions" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -95,6 +97,7 @@
             android:padding="20dp">
 
             <TextView
+                android:id="@+id/textViewOpponentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="name 님과의 대화"
@@ -159,7 +162,7 @@
                     android:src="@drawable/ic_launcher_background" />
 
                 <TextView
-                    android:id="@+id/textViewPersonalChattingName"
+                    android:id="@+id/textViewPersonalChattingOpponentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -1,6 +1,6 @@
 package com.test.tripfriend.dataclassmodel
 
-data class GroupChat(
+data class GroupChatRoom(
     val groupChatPostWriterEmail : String,
     val groupChatMemberEmailList : List<String>,
     val groupChatTripPostId : String

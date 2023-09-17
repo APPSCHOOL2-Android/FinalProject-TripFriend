@@ -57,7 +57,7 @@
                     android:id="@+id/textInputEditTextGroupChatRoomSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_box"
+                    android:background="@drawable/border2"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:maxLength="300" />
             </com.google.android.material.textfield.TextInputLayout>

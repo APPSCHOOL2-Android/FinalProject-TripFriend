@@ -51,7 +51,6 @@
     <string name="select_time">날짜 선택</string>
 
 
-
     <string-array name="spinner_mbti_list">
         <item>선택안함</item>
         <item>ENFP</item>
