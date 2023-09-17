@@ -12,28 +12,39 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.google.android.material.chip.Chip
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentMyAccompanyInfoBinding
 import com.test.tripfriend.databinding.MyAccompanyItemRowBinding
+import com.test.tripfriend.dataclassmodel.TripReview
+import com.test.tripfriend.viewmodel.TripReviewViewModel
+import com.test.tripfriend.viewmodel.UserViewModel
 
 class MyAccompanyInfoFragment : Fragment() {
+
     lateinit var fragmentMyAccompanyInfoBinding: FragmentMyAccompanyInfoBinding
     lateinit var mainActivity: MainActivity
     lateinit var callback: OnBackPressedCallback
+
+    lateinit var userViewModel : UserViewModel
+    lateinit var tripReviewViewModel: TripReviewViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
+
         mainActivity = activity as MainActivity
         fragmentMyAccompanyInfoBinding = FragmentMyAccompanyInfoBinding.inflate(layoutInflater)
 
-
+        //로그인 된 유저의 정보로 변경 필
+        val testUserEmail = "nueijeel0423@gmail.com"
+        val testUserAuthentication = "이메일"
 
         fragmentMyAccompanyInfoBinding.run {
 
@@ -43,38 +54,22 @@ class MyAccompanyInfoFragment : Fragment() {
                 //툴바 뒤로가기
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT)
-                    mainActivity.activityMainBinding.bottomNavigationViewMain.visibility=View.VISIBLE
+                    mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
                 }
             }
 
-            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다니도록)
-            seekbarFriendSpeed2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    val padding=seekbarFriendSpeed2.paddingLeft+seekbarFriendSpeed2.paddingRight
-                    val sPos = seekbarFriendSpeed2.left+seekbarFriendSpeed2.paddingLeft
-                    val xPos = (seekbarFriendSpeed2.width-padding)*seekbarFriendSpeed2.progress/seekbarFriendSpeed2.max+sPos-(textViewFriendSpeed2.width/2)
-                    textViewFriendSpeed2.x = xPos.toFloat()
-                    textViewFriendSpeed2.text=seekbarFriendSpeed2.progress.toString()
-                }
-
-                override fun onStartTrackingTouch(p0: SeekBar?) {
-
-                }
-
-                override fun onStopTrackingTouch(p0: SeekBar?) {
-
-                }
-            })
-
             //동행 후기 리사이클러뷰
-            recyclerViewMyAccount.run {
+            recyclerViewMyAccountInfo.run {
                 adapter = ReviewItemAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
             }
 
+            seekbarMyAccompanyInfoFriendSpeed.isEnabled = false
+
         }
 
-
+        initUserViewModel(testUserEmail, testUserAuthentication)
+        initReviewViewModel(testUserEmail)
 
         return fragmentMyAccompanyInfoBinding.root
     }
@@ -86,7 +81,7 @@ class MyAccompanyInfoFragment : Fragment() {
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 main.removeFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT)
-                main.activityMainBinding.bottomNavigationViewMain.visibility=View.VISIBLE
+                main.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
 
             }
         }
@@ -99,19 +94,32 @@ class MyAccompanyInfoFragment : Fragment() {
     }
 
 
+    inner class ReviewItemAdapter : RecyclerView.Adapter<ReviewItemAdapter.ViewHolder>(){
 
-    inner class ReviewItemAdapter():RecyclerView.Adapter<ReviewItemAdapter.ViewHolder>(){
+        private var reviewItemList : List<TripReview> = emptyList()
 
-        inner class ViewHolder(myAccompanyItemRow:MyAccompanyItemRowBinding):RecyclerView.ViewHolder(myAccompanyItemRow.root){
-            val textViewReviewerNickName:TextView
-            val textViewMyReviewScoreFromPartner:TextView
-            val rootViewMyStyleReviewFromPartner:LinearLayout
+        fun updateItemList(newList : List<TripReview>){
+            this.reviewItemList = newList
+            notifyDataSetChanged()
+        }
+
+        inner class ViewHolder(myAccompanyItemRow : MyAccompanyItemRowBinding) : RecyclerView.ViewHolder(myAccompanyItemRow.root){
+            val textViewReviewerNickName : TextView
+            val textViewMyReviewScoreFromPartner : TextView
+            val chipRowLaziness : Chip
+            val chipRowPlan : Chip
+            val chipRowActive : Chip
+            val chipRowNeatness : Chip
+            val chipRowLoudness : Chip
 
             init {
                 this.textViewReviewerNickName = myAccompanyItemRow.textViewReviewerNickName
                 this.textViewMyReviewScoreFromPartner = myAccompanyItemRow.textViewMyReviewScoreFromPartner
-                //파트너가 설정한 내 스타일 카드를 addView하기 위한 root뷰
-                this.rootViewMyStyleReviewFromPartner = myAccompanyItemRow.rootViewMyStyleReviewFromPartner
+                this.chipRowLaziness = myAccompanyItemRow.chipRowLaziness
+                this.chipRowPlan = myAccompanyItemRow.chipRowPlan
+                this.chipRowActive = myAccompanyItemRow.chipRowActive
+                this.chipRowNeatness = myAccompanyItemRow.chipRowNeatness
+                this.chipRowLoudness = myAccompanyItemRow.chipRowLoudness
             }
         }
 
@@ -125,11 +133,66 @@ class MyAccompanyInfoFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 9
+            return reviewItemList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.textViewMyReviewScoreFromPartner.text = reviewItemList[position].tripReviewScore.toString()
+            holder.chipRowLaziness.text = reviewItemList[position].tripReviewStyle[0]
+            holder.chipRowPlan.text = reviewItemList[position].tripReviewStyle[1]
+            holder.chipRowActive.text = reviewItemList[position].tripReviewStyle[2]
+            holder.chipRowNeatness.text = reviewItemList[position].tripReviewStyle[3]
+            holder.chipRowLoudness.text = reviewItemList[position].tripReviewStyle[4]
+            holder.textViewReviewerNickName.text = setReviewWriterNickname(reviewItemList[position].tripReviewWriterEmail)
+        }
+    }
 
+    fun initUserViewModel(userEmail : String, userAuthentication : String) {
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel.getTargetUserData(userEmail, userAuthentication)
+
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            if(user != null){
+                fragmentMyAccompanyInfoBinding.run {
+                    textViewMyAccompanyInfoFriendSpeed.text = "${user.userFriendSpeed} km"
+                    seekbarMyAccompanyInfoFriendSpeed.progress = user.userFriendSpeed.toInt()
+                    formatFriendSpeed(user.userTripScore)
+                    textViewMyAccompanyInfoCount.text = user.userTripCount.toString()
+                }
+            }
+        }
+    }
+
+    fun initReviewViewModel(userEmail : String){
+        tripReviewViewModel = ViewModelProvider(this)[TripReviewViewModel::class.java]
+        tripReviewViewModel.getTargetUserReviews(userEmail)
+
+        tripReviewViewModel.userReviewList.observe(viewLifecycleOwner){ reviewList ->
+            if(reviewList != null){
+                (fragmentMyAccompanyInfoBinding.recyclerViewMyAccountInfo.adapter as? ReviewItemAdapter)?.updateItemList(reviewList)
+                fragmentMyAccompanyInfoBinding.textViewMyAccompanyInfoReviewTotalCount.setText(reviewList.size.toString())
+            }
+        }
+    }
+
+    fun setReviewWriterNickname(reviewWriterEmail : String) : String{
+        tripReviewViewModel.getReviewWriterNickname(reviewWriterEmail)
+
+        var reviewerNickname = ""
+
+        tripReviewViewModel.reviewWriter.observe(viewLifecycleOwner){ nickName ->
+            if(nickName != null){
+                reviewerNickname = nickName
+            }
+        }
+        return reviewerNickname
+    }
+
+    fun formatFriendSpeed(userTripScore : Double){
+        fragmentMyAccompanyInfoBinding.textViewMyAccompanyInfoScore.text = when(userTripScore){
+            0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 ->
+                "${userTripScore.toInt()}"
+            else -> "$userTripScore"
         }
     }
 }

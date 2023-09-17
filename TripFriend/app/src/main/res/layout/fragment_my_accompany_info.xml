@@ -59,24 +59,24 @@
 
 
                 </LinearLayout>
+
                 <TextView
-                    android:id="@+id/textViewFriendSpeed2"
+                    android:id="@+id/textViewMyAccompanyInfoFriendSpeed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="몇km"
-                    android:textColor="@color/highLightColor"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:textColor="@color/highLightColor" />
 
 
                 <SeekBar
-                    android:id="@+id/seekbarFriendSpeed2"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:id="@+id/seekbarMyAccompanyInfoFriendSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:max="100"
                     android:layout_gravity="center"
-                    android:progress="36"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:max="100"
+                    android:progress="10"
                     android:progressDrawable="@drawable/my_info_seekbar"
                     android:splitTrack="false"
                     android:thumb="@drawable/directions_run_24px" />
@@ -110,18 +110,19 @@
                         android:gravity="center_horizontal"
                         android:layout_weight="1"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/textViewMyAccompanyScore"
+                            android:id="@+id/textViewMyAccompanyInfoScore"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/Theme.App.Medium"
-                            android:text="7.8"/>
+                            android:textAppearance="@style/Theme.App.Medium" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:textAppearance="@style/Theme.App.Medium"
-                            android:text=" 점/"/>
+                            android:text=" 점 / "
+                            android:textAppearance="@style/Theme.App.Medium" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -144,8 +145,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
                         android:layout_weight="0.7"
-                        android:textAppearance="@style/Theme.App.Medium"
-                        android:text="매칭 횟수"/>
+                        android:text="동행 횟수"
+                        android:textAppearance="@style/Theme.App.Medium" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -153,12 +154,12 @@
                         android:gravity="center_horizontal"
                         android:layout_weight="1"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/textViewAccompanyCount"
+                            android:id="@+id/textViewMyAccompanyInfoCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/Theme.App.Medium"
-                            android:text="9"/>
+                            android:textAppearance="@style/Theme.App.Medium" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -184,32 +185,34 @@
                     android:textStyle="bold"
                     android:textAppearance="@style/Theme.App.Medium"
                     android:text="총" />
+
                 <TextView
-                    android:id="@+id/textViewMyAccompanyReviewTotalCount"
+                    android:id="@+id/textViewMyAccompanyInfoReviewTotalCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textAppearance="@style/Theme.App.Medium"
+                    android:textColor="@color/highLightColor"
+                    android:textStyle="bold" />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/highLightColor"
                     android:textStyle="bold"
                     android:textAppearance="@style/Theme.App.Medium"
-                    android:text="9" />
+                    android:text="개" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/highLightColor"
-                    android:textStyle="bold"
+                    android:text="의 동행 후기를 받았습니다"
                     android:textAppearance="@style/Theme.App.Medium"
-                    android:text=" 개" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textAppearance="@style/Theme.App.Medium"
-                    android:text="의 동행 후기가 있습니다" />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewMyAccount"
+                android:id="@+id/recyclerViewMyAccountInfo"
                 android:layout_marginTop="10dp"
                 android:padding="20dp"
                 android:layout_width="match_parent"
