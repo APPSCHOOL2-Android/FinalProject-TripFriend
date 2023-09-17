@@ -30,4 +30,21 @@ class UserRepository {
         return fileRef.downloadUrl.await()
     }
 
+    //푸시 알람 설정 여부 업데이트하는 함수
+    suspend fun updateTargetUserPushNotification(documentId : String, pushNotificationState : Boolean){
+        val firestore = Firebase.firestore
+
+        firestore.collection("User")
+            .document(documentId)
+            .update("userPushNotification",pushNotificationState).await()
+    }
+
+    //채팅 알람 설정 여부 업데이트하는 함수
+    suspend fun updateTargetUserChatNotification(documentId : String, chatNotificationState : Boolean){
+        val firestore = Firebase.firestore
+
+        firestore.collection("User")
+            .document(documentId)
+            .update("userChatNotification",chatNotificationState).await()
+    }
 }
