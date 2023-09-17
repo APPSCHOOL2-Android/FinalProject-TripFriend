@@ -47,7 +47,10 @@ class MyInfoMainFragment : Fragment() {
 
                 setOnMenuItemClickListener {
                     //톱니 바퀴 클릭시 앱 설정 창으로 이동
-                    mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,null)
+                    val newBundle = Bundle()
+                    newBundle.putString("userDocumentId", userViewModel.userDocumentId.value.toString())
+
+                    mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,newBundle)
                     mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
                     true
                 }

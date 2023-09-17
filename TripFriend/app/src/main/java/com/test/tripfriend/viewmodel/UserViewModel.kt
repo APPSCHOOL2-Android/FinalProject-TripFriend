@@ -25,6 +25,10 @@ class UserViewModel : ViewModel() {
     val userProfileImage : LiveData<Uri>
         get() = _userProfileImage
 
+    private val _userDocumentId = MutableLiveData<String>()
+    val userDocumentId : LiveData<String>
+        get() = _userDocumentId
+
     //_user 값 초기화
     fun getTargetUserData(targetUserEmail : String, targetUserAuthentication : String){
         //서버에서 유저 정보 가져옴
@@ -34,9 +38,12 @@ class UserViewModel : ViewModel() {
             }
 
         if(currentDocSnapshot != null){
+            currentDocSnapshot.documents.forEach { documentSnapshot ->
+                _userDocumentId.value = documentSnapshot.id
+            }
             val currentUser = currentDocSnapshot.toObjects(User::class.java)
-            currentUser.forEach {
-                _user.value = it
+            currentUser.forEach { user ->
+                _user.value = user
             }
         }
     }
