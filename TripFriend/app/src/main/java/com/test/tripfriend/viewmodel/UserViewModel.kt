@@ -1,0 +1,53 @@
+package com.test.tripfriend.viewmodel
+
+import android.content.ContentResolver
+import android.net.Uri
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.test.tripfriend.R
+import com.test.tripfriend.dataclassmodel.User
+import com.test.tripfriend.repository.UserRepository
+import kotlinx.coroutines.runBlocking
+
+class UserViewModel : ViewModel() {
+    //유저 레포지토리 객체
+    val userRepository = UserRepository()
+
+    //유저 뷰모델
+    private val _user = MutableLiveData<User>()
+    val user : LiveData<User>
+        get() = _user
+
+    //유저 프로필 이미지 뷰모델
+    private val _userProfileImage = MutableLiveData<Uri>()
+    val userProfileImage : LiveData<Uri>
+        get() = _userProfileImage
+
+    //_user 값 초기화
+    fun getTargetUserData(targetUserEmail : String, targetUserAuthentication : String){
+        //서버에서 유저 정보 가져옴
+        val currentDocSnapshot =
+            runBlocking {
+                userRepository.getTargetUserData(targetUserEmail, targetUserAuthentication)
+            }
+
+        if(currentDocSnapshot != null){
+            val currentUser = currentDocSnapshot.toObjects(User::class.java)
+            currentUser.forEach {
+                _user.value = it
+            }
+        }
+    }
+
+    //_userProfileImage 값 초기화
+    fun getTargetUserProfileImage(targetUserProfileImagePath : String){
+        val userProfileImageUri =
+            runBlocking { userRepository.getTargetUserProfileImage(targetUserProfileImagePath) }
+
+        if(userProfileImageUri != null){
+            _userProfileImage.value = userProfileImageUri
+        }
+    }
+}
