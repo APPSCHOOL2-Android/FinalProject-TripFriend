@@ -62,12 +62,17 @@ class GroupChatViewModel : ViewModel() {
                     async { groupChatRepository.getRoomInfoFromPost(roomObj?.groupChatTripPostId!!) }
                 val postInfo = postInfoSnapshot.await().toObject(PostInfo::class.java)
                 val postId=postInfoSnapshot.await().id
+                //채팅방 주인 정보 저장
+                groupChatRoomObj.groupChatPostWriterEmail=roomObj?.groupChatPostWriterEmail
+                //동행 리스트 저장
+                groupChatRoomObj.groupChatMemberNicknameList= roomObj?.groupChatMemberNicknameList!!
                 //동행글 타이틀 저장
                 groupChatRoomObj.tripPostTitle=postInfo?.tripPostTitle
                 //동행글 id저장
                 groupChatRoomObj.tripPostId=postId
                 //참여한 인원수 저장
                 groupChatRoomObj.memberCount=postInfo?.tripPostMemberList?.size
+                Log.d("testtt","${groupChatRoomObj.tripPostTitle}")
 
                 //최근 채팅방 정보를 동기처리로 저장
                 val lastChatSnapshot =
@@ -75,10 +80,10 @@ class GroupChatViewModel : ViewModel() {
                 lastChatInfo.addAll(lastChatSnapshot.await().documents)
 
                 for (lastChat in lastChatInfo) {
+                    Log.d("testt","최근 채팅")
                     val chatData = lastChat.toObject(GroupChatting::class.java)
                     groupChatRoomObj.lastChatDate = chatData?.groupChatSendDateAndTime
                     groupChatRoomObj.lastChatContent = chatData?.groupChatContent
-                    groupChatInfo.add(groupChatRoomObj)
                     Log.d("이거맞나","${groupChatRoomObj.roomId}")
                     Log.d("이거맞나","${groupChatRoomObj.memberCount}")
                     Log.d("이거맞나","${groupChatRoomObj.tripPostId}")
@@ -87,6 +92,8 @@ class GroupChatViewModel : ViewModel() {
                     Log.d("이거맞나","${groupChatRoomObj.tripPostTitle}")
 
                 }
+                Log.d("zzzzzz","${groupChatRoomObj.groupChatPostWriterEmail}")
+                groupChatInfo.add(groupChatRoomObj)
             }
             //메인 쓰레드에서 라이브 데이터 저장
             withContext(Dispatchers.Main) {

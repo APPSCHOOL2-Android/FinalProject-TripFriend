@@ -2,7 +2,8 @@ package com.test.tripfriend.dataclassmodel
 
 data class GroupChatRoom(
     val groupChatPostWriterEmail: String?=null,
-    val groupChatTripPostId: String?=null
+    val groupChatTripPostId: String?=null,
+    val groupChatMemberNicknameList: List<String> = emptyList()
 )
 
 data class GroupChatting(
@@ -28,4 +29,6 @@ class GroupChatInfo {
     var memberCount:Int?=null
     var lastChatContent: String? = null
     var lastChatDate: String? = null
+    var groupChatPostWriterEmail:String?=null
+    var groupChatMemberNicknameList: List<String> = emptyList()
 }

@@ -16,6 +16,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -48,16 +50,12 @@ import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.ReadPostFragment
 import com.test.tripfriend.ui.trip.ReviewFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
+import com.test.tripfriend.ui.user.LoginMainFragment
 import com.test.tripfriend.ui.user.LoginMainActivity
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-    var selectedTabPosition:Int = 0
-
     lateinit var activityMainBinding: ActivityMainBinding
-
-    // 키보드 관리자
-    lateinit var inputMethodManager: InputMethodManager
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var userClass : UserLogin
@@ -233,23 +231,6 @@ class MainActivity : AppCompatActivity() {
     // Fragment를 BackStack에서 제거한다.
     fun removeFragment(name: String) {
         supportFragmentManager.popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-    }
-
-    // 키보드를 올려주는 메서드
-    fun showSoftInput(view: View, delay:Long){
-        view.requestFocus()
-        thread {
-            SystemClock.sleep(delay)
-            inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
-    }
-
-    // 키보드를 내려주는 메서드
-    fun hideSoftInput(){
-        if(currentFocus != null){
-
-            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-        }
     }
 
     //uri를 이미지뷰에 셋팅하는 함수

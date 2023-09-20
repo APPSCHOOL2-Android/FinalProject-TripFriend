@@ -96,7 +96,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            app:srcCompat="@drawable/favorite_fill_24px" />
+                            app:srcCompat="@drawable/favorite_24px" />
 
                         <TextView
                             android:id="@+id/textViewTripMainRowLikedCount"

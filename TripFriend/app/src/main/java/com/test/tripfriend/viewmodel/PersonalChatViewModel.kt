@@ -1,5 +1,6 @@
 package com.test.tripfriend.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,8 @@ class PersonalChatViewModel : ViewModel() {
 
     //채팅방의 변화가 감지되는지 감시하기 위한 라이브데이터
     val changeString = MutableLiveData<String>()
+
+    val imageUriList = MutableLiveData<MutableList<Uri?>>()
 
     //나와 관련된 채팅방을 모두 불러와서 채팅방을 띄우는데 필요한 정보를 수집
     fun fetchChatRoomInfo(myEmail: String) {
@@ -72,6 +75,16 @@ class PersonalChatViewModel : ViewModel() {
                 if (data != null) {
                     data.documentId = roomIdList[idx]
 
+                    //이미지uri가져오는 작업
+                    if(data.userProfilePath==""||data.userProfilePath==null||data.userProfilePath=="null"){
+                        data.imageUri=null
+                    }else{
+                        runBlocking {
+                            val uri=personalChatRepository.getUserProfileImage(data.userProfilePath!!)
+                            data.imageUri=uri
+                        }
+                    }
+
                     //최근 채팅방 정보를 동기처리로 저장
                     val lastChatSnapshot =
                         async { personalChatRepository.getLastChat(roomIdList[idx]) }
@@ -82,7 +95,7 @@ class PersonalChatViewModel : ViewModel() {
                         data.lastChatDate = chatData?.personalChatSendDateAndTime
                         data.lastChatContent = chatData?.personalChatContent
                     }
-
+                    Log.d("gogo","${data.imageUri}")
                     personalChatInfo.add(data)
                 }
             }
@@ -143,6 +156,24 @@ class PersonalChatViewModel : ViewModel() {
                 }
         }
     }
+
+    //개인 채팅방의 상대 이미지 uri를 가져오는 작업(아이템마다)
+//    fun getImageUri(list:MutableList<PersonalChatInfo>){
+//        val resultList= mutableListOf<Uri?>()
+//        for (info in list){
+//            //이미지 경로가 null이면 uri리스트에 null삽입
+//            if(info.userProfilePath==""||info.userProfilePath==null||info.userProfilePath=="null"){
+//                resultList.add(null)
+//            }else{
+//                runBlocking {
+//                    val uri=personalChatRepository.getUserProfileImage(info.userProfilePath!!)
+//                    resultList.add(uri)
+//                }
+//            }
+//        }
+//        imageUriList.value=resultList
+//
+//    }
 
 
 }

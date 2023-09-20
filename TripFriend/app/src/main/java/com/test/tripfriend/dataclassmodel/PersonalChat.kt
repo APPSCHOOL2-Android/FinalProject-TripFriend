@@ -1,5 +1,7 @@
 package com.test.tripfriend.dataclassmodel
 
+import android.net.Uri
+
 data class PersonalChatRoom(
     val personalChatPostWriterEmail: String,       //동행글 작성자 이메일
     val personalChatRequesterEmail: String,         //요청자 이메일
@@ -34,6 +36,9 @@ class PersonalChatInfo {
     var documentId: String? = null
     var lastChatContent: String? = null
     var lastChatDate: String? = null
+    var imageUri: Uri?=null
+
+
 }
 
 

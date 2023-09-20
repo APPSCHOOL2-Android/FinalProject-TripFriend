@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentGroupChatRoomBinding
@@ -33,9 +35,9 @@ class GroupChatRoomFragment : Fragment() {
     lateinit var fragmentGroupChatRoomBinding: FragmentGroupChatRoomBinding
     lateinit var groupChatViewModel: ChattingViewModel
     lateinit var memberInfoMap: MutableList<MutableMap<String, String>>
-    var groupChatRepository=GroupChatRepository()
-    var memberList= mutableListOf<String>()
-    var memberimage = mutableListOf <String>()
+    var groupChatRepository = GroupChatRepository()
+    var memberList = mutableListOf<String>()
+    var memberimage = mutableListOf<String>()
 
     lateinit var displayMetrics: DisplayMetrics
 
@@ -43,8 +45,9 @@ class GroupChatRoomFragment : Fragment() {
     lateinit var tripPostId: String
     lateinit var roomId: String
     lateinit var postTitle: String
+    lateinit var roomOwnerEmail:String
 
-    val MY_ID = "sori2189@naver.com"
+    lateinit var MY_EMAIL: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,13 +56,13 @@ class GroupChatRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentGroupChatRoomBinding = FragmentGroupChatRoomBinding.inflate(layoutInflater)
+        MY_EMAIL = mainActivity.userClass.userEmail
 
         //그룹방 아이디와 해당 방의 동행글 정보 가져오기
         roomId = arguments?.getString("groupRoomId").toString()
         tripPostId = arguments?.getString("postId").toString()
         postTitle = arguments?.getString("postTitle").toString()
-
-
+        roomOwnerEmail = arguments?.getString("roomOwnerEmail").toString()
 
         groupChatViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
         groupChatViewModel.run {
@@ -76,14 +79,25 @@ class GroupChatRoomFragment : Fragment() {
 //                데이터 가져오기
                 groupChatViewModel.groupChattingChangeListener(roomId)
 
-                memberInfoMap[0].forEach { (key,value)->
+                memberInfoMap[0].forEach { (key, value) ->
                     memberList.add(value)
                 }
-                memberInfoMap[1].forEach { (key,value)->
+                memberInfoMap[1].forEach { (key, value) ->
                     memberimage.add(value)
                 }
+                Log.d("testt", "${memberimage}")
 
-                (fragmentGroupChatRoomBinding.recyclerViewGroupChatRoomParticipants.adapter as ParticipantsAdapter).updateItemList(memberList)
+                (fragmentGroupChatRoomBinding.recyclerViewGroupChatRoomParticipants.adapter as ParticipantsAdapter).updateItemList(
+                    memberList
+                )
+                //햄버거에서 내 사진
+                fragmentGroupChatRoomBinding.imageViewGroupChatRoom
+                if (memberInfoMap[1].get(mainActivity.userClass.userEmail) != "null") {
+                    Glide.with(mainActivity).load(memberInfoMap[1].get(mainActivity.userClass.userEmail)!!.toUri()
+                    ).into(fragmentGroupChatRoomBinding.imageViewGroupChatRoom)
+                } else {
+                    fragmentGroupChatRoomBinding.imageViewGroupChatRoom.setImageResource(R.drawable.person_24px)
+                }
 
 
             }
@@ -91,9 +105,17 @@ class GroupChatRoomFragment : Fragment() {
                 Log.d("testtt", "초기화됨:$tripPostId")
                 getUserDataInGroupChat(tripPostId)
             }
+            if (::postTitle.isInitialized) {
+                fragmentGroupChatRoomBinding.textViewSidePostTitle.text=postTitle
+            }
+            if (::roomOwnerEmail.isInitialized) {
+                if (mainActivity.userClass.userEmail==roomOwnerEmail){
+                    fragmentGroupChatRoomBinding.buttonGroupChatRoomExit.visibility=View.GONE
+                }
+            }
+
 
         }
-
 
         //하단 nav bar 안보이게
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
@@ -110,7 +132,7 @@ class GroupChatRoomFragment : Fragment() {
                     mainActivity.removeFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT)
                 }
 
-                textViewGroupChatRoomToolbarTitle.text=postTitle
+                textViewGroupChatRoomToolbarTitle.text = postTitle
 
                 // 메뉴 버튼
                 setOnMenuItemClickListener {
@@ -133,8 +155,9 @@ class GroupChatRoomFragment : Fragment() {
                     layoutManager = manager
                 }
 
-                //햄버거에서 내 정보 보여지는 곳
-                textViewGroupChattingUserName.text="프리퍼런스에서 유저닉네임"
+                //햄버거에서 내 이름
+                textViewGroupChattingUserName.text = "${mainActivity.userClass.userNickname}"
+
 
                 // 나가기 버튼
                 buttonGroupChatRoomExit.run {
@@ -145,7 +168,10 @@ class GroupChatRoomFragment : Fragment() {
                             setMessage("나가기를 하면 대화내용이 모두 삭제되며 동행 신청이 취소되고 채팅 목록에서도 삭제됩니다.")
                             setNegativeButton("취소", null)
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
-                                //동행글에서 멤버에 자기 자신 삭제
+                                //동행글에서 멤버에 자기 자신 삭제하고 채팅방 자기자신 삭제
+                                mainActivity.removeFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT)
+                                groupChatViewModel.outMemberFromChatRoom(mainActivity.userClass.userNickname,roomId,tripPostId)
+
                             }
                             show()
                         }
@@ -156,11 +182,6 @@ class GroupChatRoomFragment : Fragment() {
             // 입력창의 최대 높이 설정 (기기 세로 사이즈의 1/3)
             val oneThirdScreenHeight = displayMetrics.heightPixels / 3
             textInputEditTextGroupChatRoomSearch.maxHeight = oneThirdScreenHeight
-
-
-
-
-
 
             buttonGroupChatRoomSend.setOnClickListener {
                 Log.d("testtt", "클릭")
@@ -196,7 +217,7 @@ class GroupChatRoomFragment : Fragment() {
 
                 //저장할 데이터 생성
                 val groupChatting = GroupChatting(
-                    MY_ID,
+                    MY_EMAIL,
                     groupChatContent,
                     groupChatSendDateAndTime,
                     groupChatSendTimeStamp
@@ -286,7 +307,7 @@ class GroupChatRoomFragment : Fragment() {
             holder.textViewRowChatRoomUser.maxWidth = halfScreenWidth
             holder.textViewOpponentContent.maxWidth = halfScreenWidth
             //받아온 데이터가 내가 보낸 게 아니라면
-            if (itemList[position].groupChatWriterEmail != MY_ID) {
+            if (itemList[position].groupChatWriterEmail != MY_EMAIL) {
                 holder.textViewRowChatRoomUser.visibility = View.GONE
                 holder.textViewChatMoment.visibility = View.GONE
 
@@ -294,11 +315,20 @@ class GroupChatRoomFragment : Fragment() {
                 holder.textViewOpponentName.visibility = View.VISIBLE
                 holder.textViewOpponentContent.visibility = View.VISIBLE
                 holder.textViewOpponentChatMoment.visibility = View.VISIBLE
-
-                //이미지 없음...
+//
+                //이미지 설정
+                if (memberInfoMap[1].get(itemList[position].groupChatWriterEmail) != "null") {
+                    Glide.with(mainActivity).load(
+                        memberInfoMap[1].get(itemList[position].groupChatWriterEmail)!!.toUri()
+                    )
+                        .into(holder.imageViewOpponent)
+                } else {
+                    holder.imageViewOpponent.setImageResource(R.drawable.person_24px)
+                }
                 holder.imageViewOpponent
                 //이름
-                holder.textViewOpponentName.text = memberInfoMap[0].get(itemList[position].groupChatWriterEmail)
+                holder.textViewOpponentName.text =
+                    memberInfoMap[0].get(itemList[position].groupChatWriterEmail)
 
                 holder.textViewOpponentContent.text = itemList[position].groupChatContent
                 holder.textViewOpponentChatMoment.text = itemList[position].groupChatSendDateAndTime
@@ -325,7 +355,7 @@ class GroupChatRoomFragment : Fragment() {
         //데이터를 가져와서 업데이트하기 위한 메서드
         fun updateItemList(newList: MutableList<String>) {
             //변경된 사항이 날아오므로 add를 수행
-            this.itemList=newList
+            this.itemList = newList
 
             notifyDataSetChanged() // 갱신
         }
@@ -357,10 +387,20 @@ class GroupChatRoomFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ParticipantsViewHolder, position: Int) {
-//            if (만약 내 닉네임과 같으면 visible false)
-            holder.textViewGroupChatRoomName.text = itemList[position]
-            //이미지가 없어서 이런느낌으로
-//            holder.imageViewGroupChatRoomImage=memberimage[position]
+            if (mainActivity.userClass.userNickname == itemList[position]) {
+                holder.textViewGroupChatRoomName.visibility = View.GONE
+                holder.imageViewGroupChatRoomImage.visibility = View.GONE
+            } else {
+                holder.textViewGroupChatRoomName.text = itemList[position]
+                //이미지가 없어서 이런느낌으로
+                if (memberimage[position] != "null") {
+                    Glide.with(mainActivity).load(memberimage[position].toUri())
+                        .into(holder.imageViewGroupChatRoomImage)
+                } else {
+                    holder.imageViewGroupChatRoomImage.setImageResource(R.drawable.person_24px)
+                }
+            }
+
         }
     }
 

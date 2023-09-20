@@ -78,10 +78,18 @@ class GroupChatRepository {
             .get().await()
     }
 
+    //멤버 추가 메서드
     fun addGroupChatMemberNickname(userNickname : String, groupChatDocumentId : String){
         db.collection("GroupChatRoom")
             .document(groupChatDocumentId)
             .update("groupChatMemberNicknameList", FieldValue.arrayUnion(userNickname))
+    }
+
+    //멤버 삭제 메서드
+    fun deleteGroupChatMemberNickname(userNickname : String, groupChatDocumentId : String){
+        db.collection("GroupChatRoom")
+            .document(groupChatDocumentId)
+            .update("groupChatMemberNicknameList", FieldValue.arrayRemove(userNickname))
     }
 
 }

@@ -22,8 +22,7 @@ class GroupChattingFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var fragmentGroupChattingBinding: FragmentGroupChattingBinding
     lateinit var groupChatViewModel:GroupChatViewModel
-    val MY_ID = "sori2189@naver.com"
-    val MY_NICKNAME="이일팔구"
+    lateinit var MY_NICKNAME:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +31,8 @@ class GroupChattingFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentGroupChattingBinding = FragmentGroupChattingBinding.inflate(layoutInflater)
+        //로그인된 사람의 닉네임 설정
+        MY_NICKNAME=mainActivity.userClass.userNickname
         groupChatViewModel = ViewModelProvider(this)[GroupChatViewModel::class.java]
         groupChatViewModel.run {
             groupChatRoomInfo.observe(viewLifecycleOwner){
@@ -41,6 +42,7 @@ class GroupChattingFragment : Fragment() {
                 fetchGroupChatRoomInfo(MY_NICKNAME)
             }
 
+            Log.d("testtt",MY_NICKNAME)
             fetchGroupChatRoomInfo(MY_NICKNAME)
         }
 
@@ -94,6 +96,8 @@ class GroupChattingFragment : Fragment() {
                     bundle.putString("groupRoomId",itemList[adapterPosition].roomId)
                     bundle.putString("postId",itemList[adapterPosition].tripPostId)
                     bundle.putString("postTitle",itemList[adapterPosition].tripPostTitle)
+                    bundle.putString("roomOwnerEmail",itemList[adapterPosition].groupChatPostWriterEmail)
+                    bundle.putString("postId",itemList[adapterPosition].tripPostId)
                     mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT, true, true, bundle)
                 }
             }

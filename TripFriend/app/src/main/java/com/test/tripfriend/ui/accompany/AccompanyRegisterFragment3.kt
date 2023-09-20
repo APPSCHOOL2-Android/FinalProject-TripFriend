@@ -17,6 +17,7 @@ import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.AccompanyRegisterRepository
 import com.test.tripfriend.repository.UserRepository
+import kotlinx.coroutines.runBlocking
 
 class AccompanyRegisterFragment3 : Fragment() {
     lateinit var fragmentAccompanyRegisterFragment3: FragmentAccompanyRegister3Binding
@@ -30,7 +31,7 @@ class AccompanyRegisterFragment3 : Fragment() {
     var chipCount = 0
 
     val chipCategory = mutableListOf<String>()
-    val chipGender = arrayOfNulls<Boolean>(2)
+    val chipGender = arrayOf<Boolean>(false, false)
 
     var categories = mutableListOf<Chip>()
     var categoryChecked = false
@@ -38,7 +39,7 @@ class AccompanyRegisterFragment3 : Fragment() {
 
     val accompanyRegisterRepository = AccompanyRegisterRepository()
 
-
+    var documentId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +57,7 @@ class AccompanyRegisterFragment3 : Fragment() {
 
         val country = arguments?.getString("country")
         val title = arguments?.getString("title")
-        val postImagePath = arguments?.getString("postImagePath")
+        val postImagePath = arguments?.getString("postImagePath") as String
         val dates = arguments?.getStringArray("dates") as List<*>?
         val people = arguments?.getString("people")
         val content = arguments?.getString("content")
@@ -156,9 +157,9 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null && chipGender != null) {
+                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null) {
                     val tripPost = TripPost(
-                        "${userClass.userEmail}",
+                        userClass.userEmail,
                         title,
                         null,
                         people!!.toInt(),
@@ -167,25 +168,59 @@ class AccompanyRegisterFragment3 : Fragment() {
                         country,
                         latitude,
                         longitude,
-                        0,
+                        emptyList(),
                         chipCategory,
                         hashTag,
                         content,
                         "",
                         tripPostIdx.toInt(),
-                        chipGender.toList() as List<Boolean>
+                        chipGender.toList()
                     )
-                    accompanyRegisterRepository.saveAccompanyToDB(tripPost)
-                    if(imageUri != null) {
-                        if (postImagePath != null) {
-                            accompanyRegisterRepository.uploadImages(imageUri!!, postImagePath) {
-                                completePost()
-                            }
+
+//                    Log.d("qwer", "isEmpty() : ${postImagePath?.isEmpty()}")
+//                    Log.d("qwer", "length : ${postImagePath?.length}")
+//                    Log.d("qwer", "postImagePath : ${postImagePath}")
+//                    Log.d("qwer", "toString() : ${postImagePath.toString()}")
+//                    Log.d("qwer", "isNullOrEmpty() : ${postImagePath.isNullOrEmpty()}")
+//                    Log.d("qwer", "orEmpty : ${postImagePath.orEmpty()}")
+
+                    runBlocking { accompanyRegisterRepository.saveAccompanyToDB(tripPost) {
+                        Log.d("qwer", "result id : ${it.result.id}")
+                        documentId = it.result.id
+
+                        accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
+                            Log.d("qwer", "이미지 저장 되고나서 이동")
+                            completePost(userClass.userEmail, documentId)
                         }
-                    } else {
-                        // Image 없는 경우
-                        completePost()
-                    }
+                    } }
+
+//                    if(postImagePath.isEmpty()) {
+//                        accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
+//                            Log.d("qwer", "???")
+//                            completePost(userClass.userEmail, documentId)
+//                        }
+//                    } else {
+//
+//                    }
+
+
+
+//                    if(imageUri == null) {
+//                        Log.d("qwer", "ImageUri == null")
+//                    } else {
+//                        Log.d("qwer", "Image 있는 경우")
+//                        if (postImagePath != null) {
+//                            Log.d("qwer", "postImagePath != null 인 경우")
+//                            accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
+//                                Log.d("qwer", "이미지 저장 되고나서 이동")
+//                                completePost(userClass.userEmail, documentId)
+//                            }
+//                        } else {
+//                            Log.d("qwer", "Image 없는 경우")
+//                            // Image 없는 경우
+//                            completePost(userClass.userEmail, documentId)
+//                        }
+//                    }
 
                 }
 
@@ -215,17 +250,22 @@ class AccompanyRegisterFragment3 : Fragment() {
         }
     }
 
-    fun completePost() {
+    fun completePost(userEmail: String, documentId: String) {
         Snackbar.make(
             mainActivity.activityMainBinding.root,
             "등록이 완료되었습니다..",
             Snackbar.LENGTH_SHORT
         ).show()
 
+        val bundle = Bundle()
+        bundle.putString("tripPostWriterEmail", userEmail)
+        bundle.putString("tripPostDocumentId", documentId)
+        bundle.putString("viewState", "InProgress")
+
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
 
-        mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
+        mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, bundle)
     }
 }

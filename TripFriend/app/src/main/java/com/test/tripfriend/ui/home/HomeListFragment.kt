@@ -135,8 +135,6 @@ class HomeListFragment : Fragment() {
                     newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
 
-                    Log.d("qwer", "tripPostDocumentId : ${homePostItemList[adapterPosition].tripPostDocumentId}")
-
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
                 }
             }
@@ -223,7 +221,7 @@ class HomeListFragment : Fragment() {
             holder.textViewTripMainRowHashTag.visibility = View.VISIBLE
             holder.textViewTripMainRowHashTag.text = homePostItemList[position].tripPostHashTag
             holder.textViewTripMainRowLikedCount.text =
-                homePostItemList[position].tripPostLikedCount.toString()
+                homePostItemList[position].tripPostLiked!!.size.toString()
         }
     }
 
@@ -232,14 +230,11 @@ class HomeListFragment : Fragment() {
         homeViewModel.getTripPostData()
 
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
-            Log.d("qwer", "it : $it")
 //            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
 //            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
             if(it != null) {
-                Log.d("qwer", "it != null")
                 fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
                 (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
-                Log.d("qwer", "updateItemList(it)")
             } else {
                 fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.VISIBLE
                 fragmentHomeListBinding.textViewHomeListNoPost.text = "동행 중인 여행이 없습니다."

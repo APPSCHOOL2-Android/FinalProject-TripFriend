@@ -1,6 +1,8 @@
 package com.test.tripfriend.ui.home
 
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.Selection.setSelection
 import android.util.Log
@@ -23,6 +25,7 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.ui.user.LoginMainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -30,6 +33,7 @@ import java.util.Locale
 class HomeMainFragment : Fragment() {
     lateinit var fragmentHomeMainBinding: FragmentHomeMainBinding
     lateinit var mainActivity: MainActivity
+    lateinit var loginMainActivity: LoginMainActivity
 
     // 최대 선택 가능 Chip 갯수
     val maxSelectableChips = 3
@@ -159,8 +163,24 @@ class HomeMainFragment : Fragment() {
 
 
             // 플로팅버튼
+
             floatingActionButtonHomeMain.run {
                 setOnClickListener {
+                    if(userClass.userEmail == "NoneUserEmail") {
+                        MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+//                    setTitle("내용 입력")
+                            setMessage("로그인한 회원만 이용하실 수 있는 서비스입니다. \n로그인 하시겠습니까?")
+                            setNegativeButton("취소", null)
+                            setPositiveButton("로그인") { dialogInterface: DialogInterface, i: Int ->
+                                val intent = Intent(mainActivity, LoginMainActivity::class.java)
+                                startActivity(intent)
+                                mainActivity.removeFragment(MainActivity.HOME_MAIN_FRAGMENT)
+                            }
+                            show()
+                            return@setOnClickListener
+                        }
+                    }
+
                     mainActivity.replaceFragment(
                         MainActivity.ACCOMPANY_REGISTER_FRAGMENT1,
                         true,

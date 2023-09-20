@@ -51,7 +51,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     private val startAutocomplete = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
-        Log.d("qwer", "startAutocomplete ${result}")
         fragmentAccompanyRegister1Binding.iconButton.setOnClickListener(
             startAutocompleteIntentListener
         )
@@ -81,8 +80,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             Place.Field.NAME,
             Place.Field.LAT_LNG
         )
-
-        Log.d("qwer", "startAutocompleteIntent fields : ${fields.joinToString(separator = ", ")}")
 
         // 필드, 국가 및 유형 필터가 적용된 자동 완성 인텐트 구축
         val intent = Autocomplete.IntentBuilder(
@@ -156,9 +153,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 bundle.putDouble("latitude", latitude)
                 bundle.putDouble("longitude", longitude)
 
-                Log.d("qwer", "latitude : $latitude")
-                Log.d("qwer", "longitude : $longitude")
-
                 if (country == "") {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("위치 입력")
@@ -183,7 +177,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     }
 
     private fun fillInAddress(place: Place) {
-        Log.d("qwer", "fillInAddress addressComponents : ${place.addressComponents}")
 
         val components = place.addressComponents
 
@@ -241,7 +234,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-        Log.d("qwer", "updateMap latLng  : $latLng")
 //        marker?.position = latLng
 //        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
@@ -250,7 +242,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
     // [START maps_solutions_android_autocomplete_map_ready]
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("qwer", "onMapReady googleMap.cameraPosition : ${googleMap.cameraPosition}")
         map = googleMap
         try {
             // 정의된 JSON 객체를 사용하여 기본 지도의 스타일을 맞춤설정

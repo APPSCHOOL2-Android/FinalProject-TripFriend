@@ -2,29 +2,36 @@ package com.test.tripfriend.ui.home
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import com.google.android.gms.maps.CameraUpdateFactory
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.UiSettings
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.type.LatLng
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.BuildConfig
 import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentHomeMapBinding
+import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.viewmodel.HomeViewModel
 
-class HomeMapFragment : Fragment(), OnMapReadyCallback {
+class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     lateinit var fragmentHomeMapBinding: FragmentHomeMapBinding
     lateinit var mainActivity: MainActivity
-    var googleMap: GoogleMap? = null
+    private lateinit var mMap: GoogleMap
+
+    lateinit var homeViewModel: HomeViewModel
+
+    private var mapReady = false // 맵 준비 여부를 나타내는 플래그
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,68 +40,102 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         fragmentHomeMapBinding = FragmentHomeMapBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        val MAPS_API_KEY = BuildConfig.MAPS_API_KEY
+//        val MAPS_API_KEY = BuildConfig.MAPS_API_KEY
+//
+//        if (MAPS_API_KEY.isEmpty()) {
+//            Toast.makeText(mainActivity, "Add your own API key in properties as MAPS_API_KEY=YOUR_API_KEY", Toast.LENGTH_LONG).show()
+//        }
+
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.mapViewHomeMap) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         // Initialize the SDK
-        Places.initialize(context, MAPS_API_KEY)
+//        Places.initialize(context, MAPS_API_KEY)
 
         // Create a new PlacesClient instance
-        val placesClient = Places.createClient(context)
+//        val placesClient = Places.createClient(context)
 
-        val fm = mainActivity.supportFragmentManager
 //        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as MapFragment?
 //            ?: MapFragment.newInstance().also {
 ////                fm.beginTransaction().add(R.id.mapViewHomeMap, it).commit()
 //            }
 //        mapFragment.getMapAsync(this)
 
-        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
 
         return fragmentHomeMapBinding.root
 
     }
 
-    override fun onMapReady(p0: GoogleMap) {
-        this.googleMap = p0
+    override fun onMapReady(googleMap: GoogleMap) {
+        Log.d("qwer", "onMapReady")
 
+        googleMap.uiSettings.isMapToolbarEnabled = false
 
+        mMap = googleMap
+        mapReady = true
+
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel.getTripPostData()
+
+        homeViewModel.tripPostList.observe(viewLifecycleOwner) {
+
+            for (location in it) {
+                var latLng = LatLng(location.tripPostLatitude, location.tripPostLongitude)
+
+                var marker = googleMap.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title(location.tripPostTitle)
+                )
+                marker?.tag = location
+
+            }
+        }
+
+        // Set a listener for marker click.
+        googleMap.setOnMarkerClickListener(this)
     }
 
-    // 마커 추가
-//    private fun openPlacesDialog() {
-//        // Ask the user to choose the place where they are now.
-//        val listener = DialogInterface.OnClickListener { dialog, which -> // The "which" argument contains the position of the selected item.
-//            val markerLatLng = likelyPlaceLatLngs[which]
-//            var markerSnippet = likelyPlaceAddresses[which]
-//            if (likelyPlaceAttributions[which] != null) {
-//                markerSnippet = """
-//                $markerSnippet
-//                ${likelyPlaceAttributions[which]}
-//                """.trimIndent()
-//            }
-//
-//            if (markerLatLng == null) {
-//                return@OnClickListener
-//            }
-//
-//            // Add a marker for the selected place, with an info window
-//            // showing information about that place.
-//            googleMap?.addMarker(MarkerOptions()
-//                .title(likelyPlaceNames[which])
-//                .position(markerLatLng)
-//                .snippet(markerSnippet))
-//
-//            // Position the map's camera at the location of the marker.
-//            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,
-//                DEFAULT_ZOOM.toFloat()))
-//        }
-//
-//        // Display the dialog.
-//        AlertDialog.Builder(mainActivity)
-//            .setTitle(R.string.pick_place)
-//            .setItems(likelyPlaceNames, listener)
-//            .show()
-//    }
+    /** Called when the user clicks a marker.  */
+    override fun onMarkerClick(marker: Marker): Boolean {
+
+        val markerInfo: TripPost = marker.tag as TripPost
+
+        MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+            setTitle(markerInfo.tripPostTitle)
+            setMessage("동행글로 이동하시겠습니까?")
+            setNegativeButton("닫기", null)
+            setPositiveButton("이동") { dialogInterface: DialogInterface, i: Int ->
+                val newBundle = Bundle()
+                newBundle.putString(
+                    "tripPostWriterEmail",
+                    markerInfo.tripPostWriterEmail
+                ) // 작성자 이메일
+                newBundle.putString("tripPostDocumentId", markerInfo.tripPostDocumentId)   // 문서아이디
+
+                mainActivity.replaceFragment(MainActivity.HOME_MAIN_FRAGMENT, true, false, null)
+                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
+            }
+            show()
+        }
+
+        return false
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("qwer", "onResume")
+
+        if (mapReady) {
+            onMapReady(mMap)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("qwer", "onStart")
+    }
 
 }
