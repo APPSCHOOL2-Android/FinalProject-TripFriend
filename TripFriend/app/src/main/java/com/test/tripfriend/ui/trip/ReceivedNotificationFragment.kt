@@ -194,7 +194,7 @@ class ReceivedNotificationFragment : Fragment() {
     //동행 요청 뷰모델 초기화 함수
     fun initTripRequestViewModel(requestReceiverEmail : String){
         tripRequestViewModel = ViewModelProvider(this)[TripRequestViewModel::class.java]
-        tripRequestViewModel.getAllTripRequest(requestReceiverEmail)
+        tripRequestViewModel.getAllReceivedTripRequest(requestReceiverEmail)
     }
 
     fun tripRequestObserver(){
