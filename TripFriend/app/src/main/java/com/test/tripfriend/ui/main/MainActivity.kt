@@ -1,7 +1,9 @@
 package com.test.tripfriend.ui.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -24,6 +26,8 @@ import com.test.tripfriend.BuildConfig
 import com.bumptech.glide.Glide
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityMainBinding
+import com.test.tripfriend.dataclassmodel.UserLogin
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment1
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment2
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment3
@@ -53,6 +57,9 @@ class MainActivity : AppCompatActivity() {
 
     // 키보드 관리자
     lateinit var inputMethodManager: InputMethodManager
+
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var userClass : UserLogin
 
     var selectMenu = 0
 
@@ -85,6 +92,10 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        //로그인 유저 정보로 변경 필
+        sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        userClass = UserRepository.getUserInfo(sharedPreferences)
 
         val apiKey = BuildConfig.MAPS_API_KEY
         if (apiKey.isEmpty()) {

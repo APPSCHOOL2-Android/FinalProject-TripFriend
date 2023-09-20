@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.trip
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -21,9 +22,12 @@ import com.test.tripfriend.databinding.FragmentReceivedNotificationBinding
 import com.test.tripfriend.databinding.RowReceivedNotificationBinding
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.dataclassmodel.TripRequest
+import com.test.tripfriend.repository.GroupChatRepository
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.repository.TripRequestRepository
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.main.MainActivity
+import com.test.tripfriend.viewmodel.GroupChatViewModel
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.TripRequestViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
@@ -38,15 +42,14 @@ class ReceivedNotificationFragment : Fragment() {
     lateinit var tripRequestViewModel : TripRequestViewModel
     lateinit var userViewModel : UserViewModel
     lateinit var tripPostViewModel: TripPostViewModel
+    lateinit var groupChatViewModel: GroupChatViewModel
 
     var currentTripRequestPosts = mutableListOf<TripPost>()
 
     val tripPostRepository = TripPostRepository()
     val tripRequestRepository = TripRequestRepository()
+    val groupChatRepository = GroupChatRepository()
 
-    //로그인 유저 정보로 변경 필
-    val requestReceiverEmail = "nueijeel0423@gmail.com"
-    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +58,7 @@ class ReceivedNotificationFragment : Fragment() {
         fragmentReceivedNotificationBinding = FragmentReceivedNotificationBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        initTripRequestViewModel(requestReceiverEmail)
+        initTripRequestViewModel(mainActivity.userClass.userEmail)
         tripRequestObserver()
 
         fragmentReceivedNotificationBinding.run {
@@ -116,6 +119,7 @@ class ReceivedNotificationFragment : Fragment() {
                             tripPostRepository.addTripMemberNickname(textViewNotificationRowNickname.text.toString(), requestItemList[adapterPosition].tripRequestPostId)
 
                             //2. textViewNotificationRowNickname 값으로 채팅 멤버에 추가
+                            initGroupChatViewModel(requestItemList[adapterPosition].tripRequestPostId, textViewNotificationRowNickname.text.toString())
 
                             //3. 요청 상태값 바꾸기
                             runBlocking {
@@ -124,7 +128,7 @@ class ReceivedNotificationFragment : Fragment() {
                             }
 
                             //리스트 갱신
-                            initTripRequestViewModel(requestReceiverEmail)
+                            initTripRequestViewModel(mainActivity.userClass.userEmail)
                         }
 
                     }
@@ -144,7 +148,7 @@ class ReceivedNotificationFragment : Fragment() {
                         }
 
                         //리스트 갱신
-                        initTripRequestViewModel(requestReceiverEmail)
+                        initTripRequestViewModel(mainActivity.userClass.userEmail)
                     }
                 }
             }
@@ -206,7 +210,6 @@ class ReceivedNotificationFragment : Fragment() {
 
                     //tripPost 뷰모델 값이 null이면 날짜 조건을 만족하지 않는 값이므로 항목에 포함시키지 않음
                     if(tripPostViewModel.tripPost.value != null){
-                        Log.d("tripPostvalue", tripPostViewModel.tripPost.value!!.tripPostTitle)
                         sortedTripRequestList.add(tripRequest)
                         currentTripRequestPosts.add(tripPostViewModel.tripPost.value!!)
                     }
@@ -259,5 +262,13 @@ class ReceivedNotificationFragment : Fragment() {
         else{
             fragmentReceivedNotificationBinding.linearLayoutNoRequest.visibility = View.GONE
         }
+    }
+
+    fun initGroupChatViewModel(tripPostDocumentId : String, userNickname : String){
+        groupChatViewModel = ViewModelProvider(this)[GroupChatViewModel::class.java]
+        groupChatViewModel.getGroupChatDocumentId(tripPostDocumentId)
+
+        groupChatRepository.addGroupChatMemberNickname(userNickname,
+            groupChatViewModel.groupChatDocumentId.value!!)
     }
 }
