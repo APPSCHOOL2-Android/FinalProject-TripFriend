@@ -43,7 +43,6 @@ class MyAccompanyInfoFragment : Fragment() {
         mainActivity = activity as MainActivity
         fragmentMyAccompanyInfoBinding = FragmentMyAccompanyInfoBinding.inflate(layoutInflater)
 
-        //로그인 된 유저의 정보로 변경 필
         val userEmail = getUserEmail()
 
         fragmentMyAccompanyInfoBinding.run {
@@ -149,7 +148,7 @@ class MyAccompanyInfoFragment : Fragment() {
 
     fun initUserViewModel(userEmail : String, userAuthentication : String) {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getTargetUserData(userEmail, userAuthentication)
+        userViewModel.getTargetUserData(userEmail)
 
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             if(user != null){

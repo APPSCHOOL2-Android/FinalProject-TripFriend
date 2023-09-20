@@ -37,10 +37,6 @@ class MyInfoMainFragment : Fragment() {
         fragmentMyInfoMainBinding = FragmentMyInfoMainBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        //로그인 된 유저의 정보로 변경 필
-        val testUserEmail = "nueijeel0423@gmail.com"
-        val testUserAuthentication = "이메일"
-
         fragmentMyInfoMainBinding.run {
             myInfoToolbar.run {
                 setNavigationIconTint(Color.BLACK)
@@ -66,14 +62,14 @@ class MyInfoMainFragment : Fragment() {
 
         }
 
-        initViewModel(testUserEmail, testUserAuthentication)
+        initViewModel(mainActivity.userClass.userEmail)
 
         return fragmentMyInfoMainBinding.root
     }
 
-    fun initViewModel(userEmail : String, userAuthentication : String){
+    fun initViewModel(userEmail : String){
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getTargetUserData(userEmail, userAuthentication)
+        userViewModel.getTargetUserData(userEmail)
 
         userViewModel.user.observe(viewLifecycleOwner){ user ->
             if(user != null){

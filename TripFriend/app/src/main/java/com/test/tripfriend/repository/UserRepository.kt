@@ -173,14 +173,13 @@ class UserRepository {
     }
 
     //유저 정보 가져오는 함수
-    suspend fun getTargetUserData(targetUserEmail:String, targetUserAuthentication:String) : QuerySnapshot{
+    suspend fun getTargetUserData(targetUserEmail:String) : QuerySnapshot{
         //파이어스토어 객체 얻기
         val firestore = Firebase.firestore
 
         //인자로 받은 이메일 값과 일치하는 필드
         return firestore.collection("User")
             .whereEqualTo("userEmail", targetUserEmail)
-            .whereEqualTo("userAuthentication", targetUserAuthentication)
             .get().await()
     }
 

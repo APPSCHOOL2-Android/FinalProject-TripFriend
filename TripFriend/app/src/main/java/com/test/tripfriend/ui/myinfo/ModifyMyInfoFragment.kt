@@ -49,10 +49,6 @@ class ModifyMyInfoFragment : Fragment() {
         //앨범 런처 초기화
         albumLauncher = albumSetting(fragmentModifyMyInfoBinding.imageViewMyProfile)
 
-        //로그인 된 유저의 정보로 변경 필
-        val testUserEmail = "nueijeel0423@gmail.com"
-        val testUserAuthentication = "이메일"
-
         fragmentModifyMyInfoBinding.run {
 
             toolbarModifyMyInfo.run {
@@ -122,7 +118,7 @@ class ModifyMyInfoFragment : Fragment() {
                     password = passwordText
                 }
                 val imagePath = if(userViewModel.user.value?.userProfilePath?.isEmpty()!!){
-                    "UserProfileImage/$testUserEmail/1"
+                    "UserProfileImage/${mainActivity.userClass.userEmail}/1"
                 }else{
                     userViewModel.user.value?.userProfilePath!!
                 }
@@ -140,14 +136,14 @@ class ModifyMyInfoFragment : Fragment() {
             }
         }
 
-        initViewModel(testUserEmail, testUserAuthentication)
+        initViewModel(mainActivity.userClass.userEmail)
 
         return fragmentModifyMyInfoBinding.root
     }
 
-    fun initViewModel(userEmail : String, userAuthentication : String) {
+    fun initViewModel(userEmail : String) {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getTargetUserData(userEmail, userAuthentication)
+        userViewModel.getTargetUserData(userEmail)
 
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user != null) {

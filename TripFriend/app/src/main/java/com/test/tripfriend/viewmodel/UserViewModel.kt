@@ -30,11 +30,11 @@ class UserViewModel : ViewModel() {
         get() = _userDocumentId
 
     //_user 값 초기화
-    fun getTargetUserData(targetUserEmail : String, targetUserAuthentication : String){
+    fun getTargetUserData(targetUserEmail : String){
         //서버에서 유저 정보 가져옴
         val currentDocSnapshot =
             runBlocking {
-                userRepository.getTargetUserData(targetUserEmail, targetUserAuthentication)
+                userRepository.getTargetUserData(targetUserEmail)
             }
 
         if(currentDocSnapshot != null){

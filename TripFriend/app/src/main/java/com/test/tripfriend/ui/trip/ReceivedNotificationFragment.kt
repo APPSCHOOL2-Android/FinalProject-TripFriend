@@ -231,7 +231,7 @@ class ReceivedNotificationFragment : Fragment() {
     //유저 뷰모델 초기화 함수
     fun initUserViewModel(userEmail : String){
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getTargetUserData(userEmail, "이메일")
+        userViewModel.getTargetUserData(userEmail)
         userViewModel.getTargetUserProfileImage(userViewModel.user.value?.userProfilePath!!)
     }
 
