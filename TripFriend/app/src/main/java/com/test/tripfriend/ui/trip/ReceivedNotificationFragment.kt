@@ -101,10 +101,12 @@ class ReceivedNotificationFragment : Fragment() {
 
                 //프로필 이미지와 닉네임 클릭 시 동행 리뷰 상세 화면으로 넘어감
                 imageViewNotificationRowProfileImage.setOnClickListener{
-                    goToAccompanyInfoFragment(requestItemList[adapterPosition].tripRequestWriterEmail)
+                    goToAccompanyInfoFragment(requestItemList[adapterPosition].tripRequestWriterEmail,
+                        textViewNotificationRowNickname.text.toString())
                 }
                 textViewNotificationRowNickname.setOnClickListener {
-                    goToAccompanyInfoFragment(requestItemList[adapterPosition].tripRequestWriterEmail)
+                    goToAccompanyInfoFragment(requestItemList[adapterPosition].tripRequestWriterEmail,
+                        textViewNotificationRowNickname.text.toString())
                 }
 
                 //수락 버튼 클릭 이벤트
@@ -234,9 +236,10 @@ class ReceivedNotificationFragment : Fragment() {
     }
 
     //유저의 동행 정보 화면으로 전환시키는 함수
-    fun goToAccompanyInfoFragment(userEmail: String){
+    fun goToAccompanyInfoFragment(userEmail: String, userNickname: String){
         val newBundle = Bundle()
         newBundle.putString("userEmail", userEmail)
+        newBundle.putString("userNickname", userNickname)
 
         mainActivity.replaceFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT, true, true, newBundle)
     }

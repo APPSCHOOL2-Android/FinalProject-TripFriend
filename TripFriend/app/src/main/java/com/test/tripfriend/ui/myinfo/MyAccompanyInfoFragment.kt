@@ -24,6 +24,7 @@ import com.test.tripfriend.databinding.MyAccompanyItemRowBinding
 import com.test.tripfriend.dataclassmodel.TripReview
 import com.test.tripfriend.viewmodel.TripReviewViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
+import java.lang.NullPointerException
 
 class MyAccompanyInfoFragment : Fragment() {
 
@@ -43,8 +44,7 @@ class MyAccompanyInfoFragment : Fragment() {
         fragmentMyAccompanyInfoBinding = FragmentMyAccompanyInfoBinding.inflate(layoutInflater)
 
         //로그인 된 유저의 정보로 변경 필
-        val testUserEmail = "nueijeel0423@gmail.com"
-        val testUserAuthentication = "이메일"
+        val userEmail = getUserEmail()
 
         fragmentMyAccompanyInfoBinding.run {
 
@@ -68,8 +68,8 @@ class MyAccompanyInfoFragment : Fragment() {
 
         }
 
-        initUserViewModel(testUserEmail, testUserAuthentication)
-        initReviewViewModel(testUserEmail)
+        initUserViewModel(userEmail, "이메일")
+        initReviewViewModel(userEmail)
 
         return fragmentMyAccompanyInfoBinding.root
     }
@@ -193,6 +193,19 @@ class MyAccompanyInfoFragment : Fragment() {
             0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 ->
                 "${userTripScore.toInt()}"
             else -> "$userTripScore"
+        }
+    }
+
+    fun getUserEmail() : String{
+        try {
+            val bundleUserEmail = arguments?.getString("userEmail")!!
+            val bundleUserNickname = arguments?.getString("userNickname")!!
+
+            fragmentMyAccompanyInfoBinding.textViewToolbarTitle.setText(bundleUserNickname)
+
+            return bundleUserEmail
+        }catch (e : NullPointerException){
+            return mainActivity.userClass.userEmail
         }
     }
 }
