@@ -136,8 +136,6 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-
-
                 if (!(chipGender[0] == true || chipGender[1] == true)) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("성별 입력")

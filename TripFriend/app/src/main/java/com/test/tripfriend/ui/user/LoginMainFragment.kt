@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -44,14 +45,21 @@ class LoginMainFragment : Fragment() {
         fragmentLoginMainBinding = FragmentLoginMainBinding.inflate(inflater)
 
         //자동 로그인
-//        val sharedPreferences =
-//            loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
-//        if(UserRepository.checkUserInfo(sharedPreferences) == true)
-//        {
-//            val intent = Intent(loginMainActivity, MainActivity::class.java)
-//            startActivity(intent)
-//            loginMainActivity.finish()
-//        }
+        val sharedPreferences =
+            loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        if(UserRepository.checkUserInfo(sharedPreferences) == true)
+        {
+            val autoLogin =  sharedPreferences.getBoolean("autoLogin",false)
+
+            if(autoLogin == true){
+                val intent = Intent(loginMainActivity, MainActivity::class.java)
+                startActivity(intent)
+                loginMainActivity.finish()
+            }
+            else{
+                UserRepository.resetUserInfo(sharedPreferences)
+            }
+        }
 
         fragmentLoginMainBinding.run {
             buttonLoginMainEmailLogin.setOnClickListener {
@@ -71,17 +79,6 @@ class LoginMainFragment : Fragment() {
             buttonLoginMainNaverLogin.run {
                 setOnClickListener {
                     naverLogin() //로그인
-                }
-            }
-            checkBoxLoginMainAutoLogin.run {
-                setTextColor(getResources().getColor(R.color.black))
-                setOnClickListener{
-                    if(isChecked == true){
-                        Snackbar.make(fragmentLoginMainBinding.root, "자동 로그인 설정", Snackbar.LENGTH_SHORT).show()
-                    }
-                    else{
-                        Snackbar.make(fragmentLoginMainBinding.root, "자동 로그인 해제", Snackbar.LENGTH_SHORT).show()
-                    }
                 }
             }
 

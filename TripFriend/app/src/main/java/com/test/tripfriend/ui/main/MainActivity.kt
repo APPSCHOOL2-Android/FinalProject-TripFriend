@@ -324,16 +324,4 @@ class MainActivity : AppCompatActivity() {
             show()
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        Log.d("ondestroy", "ondestroy called")
-
-        //자동 로그인 체크 안됐을 때만
-        if(!userClass.checkAutoLogin){
-            UserRepository.resetUserInfo(sharedPreferences)
-            Log.d("resetUserInfo", "reset")
-        }
-    }
 }

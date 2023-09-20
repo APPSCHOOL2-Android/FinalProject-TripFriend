@@ -97,7 +97,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                         dates.add(format.format(date))
                         firstDate = format.format(date)
                         secondDate = format.format(date)
-                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
@@ -112,7 +112,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                         dates.add(format.format(endDate))
                         firstDate = format.format(startDate)
                         secondDate = format.format(endDate)
-                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
                     }
                 })
             }

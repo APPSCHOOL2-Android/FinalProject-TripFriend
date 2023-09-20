@@ -1,5 +1,6 @@
 package com.test.tripfriend.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
@@ -42,10 +43,10 @@ class HomeViewModel : ViewModel() {
                     val tripPostObj = document.toObject(TripPost::class.java)
 
                     if (tripPostObj != null) {
+                        tripPostObj.tripPostDocumentId = document.id
                         resultList.add(tripPostObj)
                     }
                 }
-
 
             }
 
@@ -57,4 +58,5 @@ class HomeViewModel : ViewModel() {
 
         }
     }
+
 }

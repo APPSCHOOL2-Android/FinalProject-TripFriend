@@ -19,6 +19,7 @@ import com.test.tripfriend.databinding.FragmentHomeListBinding
 import com.test.tripfriend.databinding.RowHomeListBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.ui.trip.InProgressFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.viewmodel.HomeViewModel
 import com.test.tripfriend.viewmodel.TripPostViewModel
@@ -54,7 +55,6 @@ class HomeListFragment : Fragment() {
         fun updateItemList(newList: List<TripPost>) {
             this.homePostItemList = newList
             notifyDataSetChanged()
-            Log.d("qwer", "updateItemList")
         }
 
 //        inner class HomeListViewHolder(rowHomeListBinding: RowHomeListBinding) : RecyclerView.ViewHolder(rowHomeListBinding.root) {
@@ -130,22 +130,14 @@ class HomeListFragment : Fragment() {
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
 
                 rowTripMainBinding.root.setOnClickListener {
-                    val newBundle = Bundle()
-                    newBundle.putString(
-                        "tripPostWriterEmail",
-                        homePostItemList[adapterPosition].tripPostWriterEmail
-                    ) // 작성자 이메일
-                    newBundle.putString(
-                        "tripPostDocumentId",
-                        homePostItemList[adapterPosition].tripPostDocumentId
-                    )   // 문서아이디
 
-                    mainActivity.replaceFragment(
-                        MainActivity.READ_POST_FRAGMENT,
-                        true,
-                        true,
-                        newBundle
-                    )
+                    val newBundle = Bundle()
+                    newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                    newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+
+                    Log.d("qwer", "tripPostDocumentId : ${homePostItemList[adapterPosition].tripPostDocumentId}")
+
+                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
                 }
             }
         }
@@ -240,10 +232,17 @@ class HomeListFragment : Fragment() {
         homeViewModel.getTripPostData()
 
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
-            if (it != null) {
-                (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(
-                    it
-                )
+            Log.d("qwer", "it : $it")
+//            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
+//            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
+            if(it != null) {
+                Log.d("qwer", "it != null")
+                fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
+                (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
+                Log.d("qwer", "updateItemList(it)")
+            } else {
+                fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.VISIBLE
+                fragmentHomeListBinding.textViewHomeListNoPost.text = "동행 중인 여행이 없습니다."
             }
         }
     }
