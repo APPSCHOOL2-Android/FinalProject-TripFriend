@@ -6,9 +6,23 @@
     android:orientation="vertical"
     tools:context=".ui.trip.SentNotificationFragment" >
 
+    <LinearLayout
+        android:id="@+id/linearLayoutNoRequest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="보낸 동행 요청이 없습니다."
+            android:textSize="@dimen/text_size_2" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSentNotification"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>
