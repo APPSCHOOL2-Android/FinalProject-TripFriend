@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.myinfo
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentMyAppSettingBinding
 import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.ui.user.LoginMainActivity
 import kotlinx.coroutines.runBlocking
 
 class MyAppSettingFragment : Fragment() {
@@ -90,8 +92,11 @@ class MyAppSettingFragment : Fragment() {
                     setNegativeButton("취소", null)
                     setPositiveButton("로그아웃"){ dialogInterface: DialogInterface, i: Int ->
                         //로그인 된 정보 지우기
-
+                        UserRepository.resetUserInfo(mainActivity.sharedPreferences)
                         //화면 전환
+                        val intent = Intent(mainActivity, LoginMainActivity::class.java)
+                        startActivity(intent)
+                        mainActivity.finish()
                     }
                 }
                 builder.show()
@@ -107,8 +112,11 @@ class MyAppSettingFragment : Fragment() {
                         //서버에 저장된 회원 정보 삭제
                         userRepository.deleteTargetUserData(userDocumentId)
                         //로그인 된 정보 지우기
-
+                        UserRepository.resetUserInfo(mainActivity.sharedPreferences)
                         //화면 전환
+                        val intent = Intent(mainActivity, LoginMainActivity::class.java)
+                        startActivity(intent)
+                        mainActivity.finish()
                     }
                     show()
                 }
