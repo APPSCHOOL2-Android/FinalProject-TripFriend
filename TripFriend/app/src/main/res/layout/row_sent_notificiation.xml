@@ -32,27 +32,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewSentNotificationRowText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                android:text="글에 대한 신청 결과"
-                android:textSize="@dimen/text_size_2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSentNotificationRowTitle" />
-
-            <TextView
                 android:id="@+id/textViewSentNotificationRowAccptState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="@dimen/text_size_1"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSentNotificationRowCancel"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSentNotificationRowText" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewSentNotificationRowTitle" />
 
             <Button
                 android:id="@+id/buttonSentNotificationRowCancel"
@@ -60,17 +52,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/font"
                 android:text="취소하기"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000"
-                android:textSize="@dimen/text_size_2"
+                android:textSize="@dimen/text_size_3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSentNotificationRowAccptState" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewSentNotificationRowTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
