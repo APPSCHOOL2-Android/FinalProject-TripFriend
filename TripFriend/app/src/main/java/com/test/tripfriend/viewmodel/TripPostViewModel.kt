@@ -32,8 +32,8 @@ class TripPostViewModel: ViewModel() {
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     val today = dataFormat.format(currentTime).toInt()
 
-    private val _tripPost = MutableLiveData<TripPost>()
-    val tripPost : LiveData<TripPost>
+    private val _tripPost = MutableLiveData<TripPost?>()
+    val tripPost : LiveData<TripPost?>
         get() = _tripPost
 
     // 오늘 날짜 기준으로 참여/지난 동행글 구분하여 데이터 추출
@@ -118,6 +118,9 @@ class TripPostViewModel: ViewModel() {
             if(currentTripPost != null){
                 if(currentTripPost.tripPostDate!![0].toLong() > date){
                     _tripPost.value = currentTripPost!!
+                }
+                else{
+                    _tripPost.value = null
                 }
             }
         }

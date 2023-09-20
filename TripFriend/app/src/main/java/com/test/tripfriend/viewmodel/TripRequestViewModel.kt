@@ -13,20 +13,30 @@ class TripRequestViewModel : ViewModel() {
 
     val tripRequestRepository = TripRequestRepository()
 
-    //요청 객체 리스트
+    //받은 요청 객체 리스트
     private val _tripRequest = MutableLiveData<List<TripRequest>>()
     val tripRequest : LiveData<List<TripRequest>>
         get() = _tripRequest
 
-    //요청 문서
+    //받은 요청 문서 Id값
     private val _tripRequestDocumentId = MutableLiveData<List<String>>()
     val tripRequestDocumentId : LiveData<List<String>>
         get() = _tripRequestDocumentId
 
-    fun getAllTripRequest(tripRequestWriterEmail : String){
+    //보낸 요청 객체 리스트
+    private val _sentTripRequest = MutableLiveData<List<TripRequest>>()
+    val sentTripRequest : LiveData<List<TripRequest>>
+        get() = _sentTripRequest
+
+    //보낸 요청 문서 Id값
+    private val _sentTripRequestDocumentId = MutableLiveData<List<String>>()
+    val sentTripRequestDocumentId : LiveData<List<String>>
+        get() = _sentTripRequestDocumentId
+
+    fun getAllReceivedTripRequest(tripRequestReceiverEmail : String){
 
         val tripRequestQuerySnapshot = runBlocking {
-            tripRequestRepository.getAllTripRequest(tripRequestWriterEmail)
+            tripRequestRepository.getAllReceivedTripRequest(tripRequestReceiverEmail)
         }
 
         if(tripRequestQuerySnapshot != null){
@@ -43,6 +53,29 @@ class TripRequestViewModel : ViewModel() {
                 tripRequestList.add(request)
             }
             _tripRequest.value = tripRequestList
+        }
+    }
+
+    fun getAllSentTripRequest(tripRequestWriterEmail : String){
+
+        val sentTripRequestQuerySnapshot = runBlocking {
+            tripRequestRepository.getAllSentTripRequest(tripRequestWriterEmail)
+        }
+
+        if(sentTripRequestQuerySnapshot != null){
+            val sentDocIdList = mutableListOf<String>()
+            val sentTripRequestList = mutableListOf<TripRequest>()
+
+            sentTripRequestQuerySnapshot.documents.forEach { sentDocumentSnapshot ->
+                sentDocIdList.add(sentDocumentSnapshot.id)
+            }
+            _sentTripRequestDocumentId.value = sentDocIdList
+
+            val sentTripRequests = sentTripRequestQuerySnapshot.toObjects(TripRequest::class.java)
+            sentTripRequests.forEach { sentTripRequest ->
+                sentTripRequestList.add(sentTripRequest)
+            }
+            _sentTripRequest.value = sentTripRequestList
         }
     }
 }
