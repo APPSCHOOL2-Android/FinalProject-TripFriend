@@ -306,7 +306,6 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                                     val sharedPreferences =
                                                                         loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
                                                                     UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
-                                                                    Log.d("aaaa","status = ${UserRepository.checkUserInfo(sharedPreferences)}")
 
                                                                     val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
                                                                         setTitle("로그인 성공")

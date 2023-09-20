@@ -89,7 +89,13 @@ class LoginMainFragment : Fragment() {
                 loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT, true, true, null)
             }
 
+            //둘러보기
             textViewLoginMainNonMember.setOnClickListener {
+
+                val sharedPreferences =
+                    loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                UserRepository.saveNoneUserInfo(sharedPreferences)
+
                 val intent = Intent(loginMainActivity, MainActivity::class.java)
                 startActivity(intent)
 

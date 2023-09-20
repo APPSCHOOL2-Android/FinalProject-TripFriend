@@ -67,6 +67,28 @@ class UserRepository {
 
             editor.apply()
         }
+
+        fun saveNoneUserInfo(sharedPreferences: SharedPreferences){
+            val editor = sharedPreferences.edit()
+
+            editor.putString("userAuthentication", "NoneUserAuthentication")
+            editor.putString("userEmail", "NoneUserEmail")
+            editor.putString("userPw", "NoneUSerPw")
+            editor.putString("userNickname", "NoneUserNickname")
+            editor.putString("userName", "NoneUserName")
+            editor.putString("userPhoneNum", "NoneUserPhoneNum")
+            editor.putString("userMBTI", "NoneUserMBTI")
+            editor.putString("userProfilePath", "NoneUserProfilePath")
+            editor.putFloat("userFriendSpeed", 10f)
+            editor.putFloat("userTripScore", 0f)
+            editor.putLong("userTripCount", 0L)
+            editor.putBoolean("userChatNotification", false)
+            editor.putBoolean("userPushNotification", false)
+            editor.putBoolean("autoLogin",false)
+
+            editor.apply()
+        }
+
         fun checkUserInfo(sharedPreferences: SharedPreferences): Boolean{
 
             val userAuthentication = sharedPreferences.getString("userAuthentication", null)
