@@ -1,6 +1,7 @@
 package com.test.tripfriend.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentChange
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class GroupChatViewModel : ViewModel() {
@@ -26,6 +28,10 @@ class GroupChatViewModel : ViewModel() {
     val groupChatRoomInfo = MutableLiveData<MutableList<GroupChatInfo>>()
 
     val changeString = MutableLiveData<String>()
+
+    private val _groupChatDocumentId = MutableLiveData<String>()
+    val groupChatDocumentId : LiveData<String>
+        get() = _groupChatDocumentId
 
     ////나와 관련된 단체 채팅방을 모두 불러와서 채팅방을 띄우는데 필요한 정보를 수집
     fun fetchGroupChatRoomInfo(myNickname: String) {
@@ -139,5 +145,16 @@ class GroupChatViewModel : ViewModel() {
         }
     }
 
+    fun getGroupChatDocumentId(tripPostDocumentId: String){
+        val groupChatDocSnapshot =
+            runBlocking {
+                groupChatRepository.getGroupChatDocumentId(tripPostDocumentId)
+            }
 
+        if(groupChatDocSnapshot != null) {
+            groupChatDocSnapshot.documents.forEach { docSnapshot ->
+                _groupChatDocumentId.value = docSnapshot.id
+            }
+        }
+    }
 }

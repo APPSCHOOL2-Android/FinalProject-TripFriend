@@ -4,6 +4,7 @@ import android.provider.ContactsContract.CommonDataKinds.Nickname
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -71,7 +72,16 @@ class GroupChatRepository {
         db.collection("GroupChatRoom").document(documentId).collection("GroupChatting").add(groupChatting)
     }
 
+    suspend fun getGroupChatDocumentId(tripPostDocumentId: String) : QuerySnapshot{
+        return db.collection("GroupChatRoom")
+            .whereEqualTo("groupChatTripPostId", tripPostDocumentId)
+            .get().await()
+    }
 
-
+    fun addGroupChatMemberNickname(userNickname : String, groupChatDocumentId : String){
+        db.collection("GroupChatRoom")
+            .document(groupChatDocumentId)
+            .update("groupChatMemberNicknameList", FieldValue.arrayUnion(userNickname))
+    }
 
 }
