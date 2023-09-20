@@ -3,6 +3,7 @@ package com.test.tripfriend.ui.trip
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,9 @@ import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
+import com.test.tripfriend.dataclassmodel.PersonalChatRoom
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.PersonalChatRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
 import java.util.ArrayList
@@ -27,6 +30,7 @@ class ReadPostFragment : Fragment() {
 
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var userViewModel: UserViewModel
+    val personalChatRepository = PersonalChatRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -140,7 +144,10 @@ class ReadPostFragment : Fragment() {
                     setTitle("1 : 1 문의하기")
                     setMessage(R.string.DM_info)
                     setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                        val persnalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                        personalChatRepository.inquiryToPersonalChatRoom(persnalChatUsers){
+                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                        }
                     }
                     setNegativeButton("취소", null)
                     show()
