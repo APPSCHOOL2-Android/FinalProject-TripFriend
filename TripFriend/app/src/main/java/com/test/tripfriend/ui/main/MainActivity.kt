@@ -11,6 +11,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -321,6 +322,18 @@ class MainActivity : AppCompatActivity() {
                 callback()
             }
             show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.d("ondestroy", "ondestroy called")
+
+        //자동 로그인 체크 안됐을 때만
+        if(!userClass.checkAutoLogin){
+            UserRepository.resetUserInfo(sharedPreferences)
+            Log.d("resetUserInfo", "reset")
         }
     }
 }
