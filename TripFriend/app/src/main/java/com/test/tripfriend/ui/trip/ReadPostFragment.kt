@@ -8,26 +8,74 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
-import com.google.android.material.appbar.MaterialToolbar
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
+import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.viewmodel.TripPostViewModel
+import com.test.tripfriend.viewmodel.UserViewModel
+import java.util.ArrayList
 import kotlin.concurrent.thread
 
 class ReadPostFragment : Fragment() {
     lateinit var fragmentReadPostBinding : FragmentReadPostBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var tripPostViewModel: TripPostViewModel
+    lateinit var userViewModel: UserViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
+
+        // 이전 화면에서 데이터 가져오기
+        val tripPostWriterEmail = arguments?.getString("tripPostWriterEmail")!!
+        val tripPostDocumentId = arguments?.getString("tripPostDocumentId")!!
+
+        val newBundle = Bundle()
+
+        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+
+        tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
+            fragmentReadPostBinding.run {
+                textViewReadPostTitle.text = tripPost.tripPostTitle
+
+                textViewReadPostDate.text = "${tripPost.tripPostDate?.get(0)} ~ ${tripPost.tripPostDate?.get(1)}"
+
+                textViewReadPostNOP.text = tripPost.tripPostMemberCount.toString()
+
+                textViewReadPostLocatoin.text = tripPost.tripPostLocationName
+
+                textViewReadPostHashTag.text = tripPost.tripPostHashTag
+
+                textViewReadPostContent.text = tripPost.tripPostContent
+
+                newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
+                newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
+                newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
+                newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
+            }
+        }
+        tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
+
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            fragmentReadPostBinding.run {
+                textViewUserNickname.text = user.userNickname
+
+                textViewUserMBTI.text = user.userMBTI
+            }
+
+
+        }
+        userViewModel.getTargetUserData(tripPostWriterEmail, "카카오")
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
         fragmentReadPostBinding.run {
@@ -72,28 +120,17 @@ class ReadPostFragment : Fragment() {
             //imageViewUserProfileImage.run { }
             //imageViewReadPostMainImage.run{}
 
+            // 프로필 보기 버튼 -> 내정보 동행리뷰로 전환
             textViewShowProfile.run{
                 isClickable = true
                 setOnClickListener {
-                    textViewReadPostToolbarTitle.text = "프로필 보기"
+                    // 유저 이메일 전달
+                    val newBundle = Bundle()
+                    //newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
+
+                    mainActivity.replaceFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT, true, true, newBundle)
                 }
             }
-
-            textViewUserNickname.text = "일론 머스크"
-
-            textViewUserMBTI.text = "CUTE"
-
-            textViewReadPostTitle.text = "화성 갈끄니까~"
-
-            textViewReadPostDate.text = "2250-01-01 ~ 2251-12-31"
-
-            textViewReadPostNOP.text = "3000"
-
-            textViewReadPostLocatoin.text = "측정불가"
-
-            textViewReadPostHashTag.text = "#화성#비트코인#테슬라#로켓#도지코인"
-
-            textViewReadPostContent.text = "화성 갈사람 구해요 우주 왕복선 값은 제가 내드림 나 돈 많음 ㅋ 거하게 소주 적시고 해장국 맛깔나게 드실분만 신청주세요."
 
             //DM버튼
             buttonReadPostDM.setOnClickListener {
@@ -101,9 +138,9 @@ class ReadPostFragment : Fragment() {
                 val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
                 builder.run {
                     setTitle("1 : 1 문의하기")
-                    setMessage("1:1 대화방에 입장합니다. 상대방을 비하하거나 불쾌한 언행을 엄격하게 모니터링 중이며 그에 따른 책임은 작성자에게 물을 수 있으므로 매너있는 채팅 부탁드립니다.")
+                    setMessage(R.string.DM_info)
                     setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-
+                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
                     }
                     setNegativeButton("취소", null)
                     show()
@@ -143,13 +180,12 @@ class ReadPostFragment : Fragment() {
 
             //그룹 채팅으로 이동 버튼
             buttonReadPostMoveChat.setOnClickListener {
-                textViewReadPostToolbarTitle.text = "그룹 채팅으로 이동"
+                mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
             }
 
             //리뷰 버튼
             buttonReadPostReview.setOnClickListener {
-                //번들로 해당 게시글의 아이디나 idx를 넘겨야함
-                mainActivity.replaceFragment(MainActivity.REVIEW_FRAGMENT,true,true,null)
+                mainActivity.replaceFragment(MainActivity.REVIEW_FRAGMENT,true,true, newBundle)
             }
         }
 

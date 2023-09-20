@@ -175,7 +175,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         content,
                         "",
                         tripPostIdx.toInt(),
-                        chipGender.toList()
+                        chipGender.toList() as List<Boolean>
                     )
                     accompanyRegisterRepository.saveAccompanyToDB(tripPost)
                     if(imageUri != null) {

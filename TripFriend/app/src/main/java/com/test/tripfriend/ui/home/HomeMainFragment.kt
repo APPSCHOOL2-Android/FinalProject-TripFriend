@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Selection.setSelection
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View

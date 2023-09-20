@@ -73,4 +73,6 @@
     <string name="social_login_info_naver_client_id">"VD9sgg3ls0NXzNhWiBQK"</string>
     <string name="social_login_info_naver_client_secret">"HZOln9k_HQ"</string>
     <string name="social_login_info_naver_client_name">네이버아이디 로그인</string>
+
+    <string name="DM_info">1:1 대화방에 입장합니다. 상대방을 비하하거나 불쾌한 언행을 엄격하게 모니터링 중이며 그에 따른 책임은 작성자에게 물을 수 있으므로 매너있는 채팅 부탁드립니다.</string>
 </resources>

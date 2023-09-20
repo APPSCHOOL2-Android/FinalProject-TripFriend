@@ -25,6 +25,8 @@ class TripPostViewModel: ViewModel() {
     val tripPostInProgressList = MutableLiveData<List<TripPost>>()
     val tripPostPassList = MutableLiveData<List<TripPost>>()
 
+    val tripPostList = MutableLiveData<TripPost>()
+
     // 오늘 날짜
     val currentTime : Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("yyyyMMdd")
@@ -34,7 +36,8 @@ class TripPostViewModel: ViewModel() {
     val tripPost : LiveData<TripPost>
         get() = _tripPost
 
-    fun getTripPostData() {
+    // 오늘 날짜 기준으로 참여/지난 동행글 구분하여 데이터 추출
+    fun getAllTripPostData() {
         val tripPostInfoList= mutableListOf<DocumentSnapshot>()
         val resultInProgressList = mutableListOf<TripPost>()
         val resultPassList = mutableListOf<TripPost>()
@@ -42,26 +45,22 @@ class TripPostViewModel: ViewModel() {
         val scope = CoroutineScope(Dispatchers.Default)
 
         scope.launch {
-            val currentTripPostSnapshot = async { tripPostRepository.getDocumentData() }
-
+            val currentTripPostSnapshot = async { tripPostRepository.getAllDocumentData() }
             tripPostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
             for(document in tripPostInfoList) {
                 val data = document.toObject(TripPost::class.java)
-
-                val tripPostObj = data
-
                 var endDate = data?.tripPostDate
 
                 // 참여중인 동행글
                 if(today <= endDate!![1].toInt()) {
-                    tripPostObj!!.tripPostDocumentId  = document.id
+                    data!!.tripPostDocumentId = document.id
 
-                    resultInProgressList.add(tripPostObj)
+                    resultInProgressList.add(data)
                 } else { // 지난 동행글
-                    tripPostObj!!.tripPostDocumentId  = document.id
+                    data!!.tripPostDocumentId = document.id
 
-                    resultPassList.add(tripPostObj)
+                    resultPassList.add(data)
                 }
             }
 
@@ -69,9 +68,37 @@ class TripPostViewModel: ViewModel() {
                 tripPostInProgressList.value = resultInProgressList
                 tripPostPassList.value = resultPassList
             }
+            scope.cancel()
+        }
+    }
+
+    // 문서id로 접근하여 데이터 가져오기
+    fun getSelectDocumentData(documentId: String) {
+
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        scope.launch {
+            var resultData = TripPost()
+
+            val currentTripPostSnapshot = async { tripPostRepository.getSelectDocumentData(documentId) }
+
+            val data = currentTripPostSnapshot.await().toObject(TripPost::class.java)
+
+            if(data != null) {
+                resultData = data
+            }
+
+            withContext(Dispatchers.Main) {
+                tripPostList.value = resultData
+            }
 
             scope.cancel()
         }
+    }
+
+    // 유저 이메일로 접근해서 데이터 가져오기
+    fun getSelectUserData(userEmail: String) {
+
     }
 
     fun getTargetUserTripPost(tripPostDocumentId : String){

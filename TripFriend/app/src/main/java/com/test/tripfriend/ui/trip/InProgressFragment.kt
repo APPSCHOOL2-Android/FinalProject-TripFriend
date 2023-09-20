@@ -153,7 +153,7 @@ class InProgressFragment : Fragment() {
     // 뷰모델
     fun initViewModel() {
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        tripPostViewModel.getTripPostData()
+        tripPostViewModel.getAllTripPostData()
 
         tripPostViewModel.tripPostInProgressList.observe(viewLifecycleOwner){
             if(it != null) {
