@@ -1,7 +1,7 @@
 package com.test.tripfriend.ui.main
 
-import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -15,8 +15,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.ImageView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -24,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.libraries.places.api.Places
 import com.test.tripfriend.BuildConfig
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.dataclassmodel.UserLogin
@@ -48,6 +47,7 @@ import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.ReadPostFragment
 import com.test.tripfriend.ui.trip.ReviewFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
+import com.test.tripfriend.ui.user.LoginMainActivity
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        //로그인 유저 정보로 변경 필
         sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE)
         userClass = UserRepository.getUserInfo(sharedPreferences)
 
@@ -129,18 +128,42 @@ class MainActivity : AppCompatActivity() {
                         }
                         //여행 클릭
                         R.id.navigationTrip -> {
-                            selectMenu = it.itemId
-                            replaceFragment(TRIP_MAIN_FRAGMENT,false,true,null)
+                            checkLoginUserIsMember(userClass.userName,
+                                callback1 = {
+                                    bottomNavigationViewMain.selectedItemId = R.id.navigationHome
+                                    selectMenu = R.id.navigationHome
+                                },
+                                callback2 = {
+                                    replaceFragment(TRIP_MAIN_FRAGMENT,false,true,null)
+                                    selectMenu = it.itemId
+                                }
+                            )
                         }
                         //채팅 클릭
                         R.id.navigationChatting -> {
-                            selectMenu = it.itemId
-                            replaceFragment(CHATTING_MAIN_FRAGMENT, false, true, null)
+                            checkLoginUserIsMember(userClass.userName,
+                                callback1 = {
+                                    bottomNavigationViewMain.selectedItemId = R.id.navigationHome
+                                    selectMenu = R.id.navigationHome
+                                },
+                                callback2 = {
+                                    selectMenu = it.itemId
+                                    replaceFragment(CHATTING_MAIN_FRAGMENT, false, true, null)
+                                }
+                            )
                         }
                         //내정보 클릭
                         R.id.navigationMyInfo -> {
-                            selectMenu = it.itemId
-                            replaceFragment(MY_INFO_MAIN_FRAGMENT, false, true, null)
+                            checkLoginUserIsMember(userClass.userName,
+                                callback1 = {
+                                    bottomNavigationViewMain.selectedItemId = R.id.navigationHome
+                                    selectMenu = R.id.navigationHome
+                                },
+                                callback2 = {
+                                    selectMenu = it.itemId
+                                    replaceFragment(MY_INFO_MAIN_FRAGMENT, false, true, null)
+                                }
+                            )
                         }
                         else -> {
                             replaceFragment(HOME_MAIN_FRAGMENT, false, true, null)
@@ -272,5 +295,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return degree
+    }
+
+    fun checkLoginUserIsMember(memberName : String, callback1 : () -> Unit, callback2: () -> Unit){
+        if(memberName == "NoneUserName"){
+            createDialog("접근 불가", "로그인이 필요한 서비스입니다."){
+                callback1()
+            }
+        }else{
+            callback2()
+        }
+    }
+
+    //다이얼로그 생성 함수
+    fun createDialog(title : String, message : String, callback : () -> Unit){
+        MaterialAlertDialogBuilder(this@MainActivity ,R.style.DialogTheme).run {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("로그인하기"){ dialogInterface: DialogInterface, i: Int ->
+                val intent = Intent(this@MainActivity, LoginMainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            setNegativeButton("취소"){ dialogInterface: DialogInterface, i: Int ->
+                callback()
+            }
+            show()
+        }
     }
 }
