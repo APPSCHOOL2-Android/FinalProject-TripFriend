@@ -51,29 +51,12 @@ class MyAppSettingFragment : Fragment() {
 
             //채팅 알림 스위치 변경 리스너
             switchChattingNotification.setOnCheckedChangeListener { compoundButton, isChecked ->
-
                 runBlocking { userRepository.updateTargetUserChatNotification(userDocumentId, isChecked) }
-
-                if (isChecked){
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT).show()
-                }
-                else{
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT).show()
-                }
             }
-
 
             //푸시 알림 스위치 변경 리스너
             switchPushNotification.setOnCheckedChangeListener { compoundButton, isChecked ->
-
                 runBlocking { userRepository.updateTargetUserPushNotification(userDocumentId, isChecked) }
-
-                if (isChecked){
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT).show()
-                }
-                else{
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT).show()
-                }
             }
 
             //계정 정보 수정 버튼
