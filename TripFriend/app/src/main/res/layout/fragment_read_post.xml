@@ -304,7 +304,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/font"
-                        android:text="        DM        "
+                        android:text=" 1:1 문의하기 "
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
