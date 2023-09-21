@@ -33,7 +33,6 @@ class ModifyMyInfoFragment : Fragment() {
 
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
-    var nicknameIsChecked:Boolean = false
     var profileImage : Uri? = null
 
     val userRepository = UserRepository()
@@ -74,45 +73,8 @@ class ModifyMyInfoFragment : Fragment() {
                 albumLauncher.launch(albumIntent)
             }
 
-            buttonNickNameCheck.setOnClickListener {
-                //닉네임 입력 검사
-                if(textIsEmptyCheck(textInputEditTextModifyNickName.text.toString(), textInputLayoutNickName, "닉네임을 입력해주세요")){
-                    return@setOnClickListener
-                }
-                //닉네임 중복 확인
-                UserRepository.getAllUser() {
-                    var check = 1
-                    for (document in it.result.documents) {
-                        if (textInputEditTextModifyNickName.text.toString() == document.getString("userNickname")) {
-                            textViewCompleteCheck.visibility = View.GONE
-                            textViewWarningNickName.visibility = View.VISIBLE
-                            check = 0
-                            break
-                        }
-                    }
-                    if(check == 1){
-                        textViewWarningNickName.visibility = View.GONE
-                        textViewCompleteCheck.visibility = View.VISIBLE
-                        nicknameIsChecked = true
-                    }
-                }
-            }
-
             buttonModifyMyInfo.setOnClickListener {
-                val nickname = textInputEditTextModifyNickName.text.toString()
                 var password = ""
-
-                //닉네임 입력 검사
-                if(textIsEmptyCheck(nickname, textInputLayoutNickName, "닉네임을 입력해주세요")){
-                    return@setOnClickListener
-                }
-
-                //닉네임 중복검사 통과 했는지 확인
-                if(!nicknameIsChecked) {
-                    textInputLayoutNickName.requestFocus()
-                    Snackbar.make(fragmentModifyMyInfoBinding.root, "닉네임 중복 검사가 필요합니다", Snackbar.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
 
                 //이메일 로그인 및 회원가입한 회원일 경우
                 if(userViewModel.user.value?.userAuthentication == "이메일"){
@@ -136,6 +98,7 @@ class ModifyMyInfoFragment : Fragment() {
                     }
                     password = passwordText
                 }
+
                 val imagePath = if(userViewModel.user.value?.userProfilePath?.isEmpty()!!){
                     "UserProfileImage/${mainActivity.userClass.userEmail}/1"
                 }else{
@@ -143,14 +106,14 @@ class ModifyMyInfoFragment : Fragment() {
                 }
 
                 runBlocking {
-                    userRepository.updateTargetUserInfo(userViewModel.userDocumentId.value!!, imagePath, nickname, spinnerMbti.selectedItem.toString(), password)
+                    userRepository.updateTargetUserInfo(userViewModel.userDocumentId.value!!, imagePath, mainActivity.userClass.userNickname, spinnerMbti.selectedItem.toString(), password)
                     //이미지 변경 됐을 때
                     if(profileImage != null){
                         //스토리지에 덮어씌우기
                         userRepository.updateTargetUserProfile(imagePath, profileImage!!)
-                        Snackbar.make(fragmentModifyMyInfoBinding.root, "계정 정보가 수정되었습니다.", Snackbar.LENGTH_SHORT).show()
-                        mainActivity.removeFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT)
                     }
+                    Snackbar.make(fragmentModifyMyInfoBinding.root, "계정 정보가 수정되었습니다.", Snackbar.LENGTH_SHORT).show()
+                    mainActivity.removeFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT)
                 }
             }
         }
@@ -176,9 +139,6 @@ class ModifyMyInfoFragment : Fragment() {
                         //유저 정보에 저장된 이미지 지정
                         userViewModel.getTargetUserProfileImage(user.userProfilePath)
                     }
-
-                    //닉네임
-                    textInputEditTextModifyNickName.setText(user.userNickname)
 
                     //mbti
                     val mbti = resources.getStringArray(R.array.spinner_mbti_list)
