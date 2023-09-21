@@ -104,6 +104,13 @@ class LikedListFragment : Fragment() {
                     newBundle.putString("endDate", tripPostItemList[adapterPosition].tripPostDate?.get(1))
                     val memberList:ArrayList<String> = tripPostItemList[adapterPosition].tripPostMemberList as ArrayList<String>
                     newBundle.putStringArrayList("memberList",memberList)
+                    var memberCheck = 1
+                    if (memberList != null) {
+                        for (member in memberList) {
+                            Log.d("aaaa", "member1 = $member")
+                            memberCheck = 0
+                        }
+                    }
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }

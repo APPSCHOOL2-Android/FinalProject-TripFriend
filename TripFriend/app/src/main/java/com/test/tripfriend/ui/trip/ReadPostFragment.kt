@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,15 @@ class ReadPostFragment : Fragment() {
         val tripPostDocumentId = arguments?.getString("tripPostDocumentId")!!
         val viewState = arguments?.getString("viewState")
         val endDate = arguments?.getString("endDate")
-        val memberList = arguments?.getStringArrayList("member")
+        val memberList = arguments?.getStringArrayList("memberList")
+
+        var memberCheck = 1
+        if (memberList != null) {
+            for (member in memberList) {
+                Log.d("aaaa", "member4 = $member")
+                memberCheck = 0
+            }
+        }
 
         val newBundle = Bundle()
 
@@ -243,10 +252,25 @@ class ReadPostFragment : Fragment() {
                             var memberCheck = 1
                             if (memberList != null) {
                                 for(member in memberList){
-                                    if(member == userClass.userNickname)
-                                        memberCheck = 0
+                                    if(member == userClass.userNickname) {
+                                        Log.d("aaaa", "member2 = $member")
+                                        memberCheck = 0 //본인이 참여중이다
+                                    }
                                 }
                                 if(memberCheck == 1){
+                                    Log.d("aaaa","참여중 아님")
+                                    buttonReadPostDM.visibility = View.VISIBLE
+                                    buttonReadPostSubmit.visibility = View.VISIBLE
+                                    buttonReadPostMoveChat.visibility = View.GONE
+                                    buttonReadPostReview.visibility = View.GONE
+                                    if(tripPostWriterEmail != userClass.userEmail){
+                                        var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
+                                        toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
+                                    }
+                                }
+                                else{
+                                    Log.d("aaaa","참여중")
                                     buttonReadPostDM.visibility = View.GONE
                                     buttonReadPostSubmit.visibility = View.GONE
                                     buttonReadPostMoveChat.visibility = View.VISIBLE
@@ -256,25 +280,6 @@ class ReadPostFragment : Fragment() {
                                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                                         toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                                     }
-                                    else{
-                                        var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
-                                        toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
-                                    }
-                                }
-                                else{
-                                    buttonReadPostDM.visibility = View.VISIBLE
-                                    buttonReadPostSubmit.visibility = View.VISIBLE
-                                    buttonReadPostMoveChat.visibility = View.GONE
-                                    buttonReadPostReview.visibility = View.GONE
-                                    if(tripPostWriterEmail != userClass.userEmail){
-                                        var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
-                                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
-                                        toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
-                                    }
-                                    else{
-                                        var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
-                                        toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
-                                    }
                                 }
                             }
                         }
@@ -282,14 +287,18 @@ class ReadPostFragment : Fragment() {
                             var memberCheck = 1
                             if (memberList != null) {
                                 for(member in memberList){
-                                    if(member == userClass.userNickname)
-                                        memberCheck = 0
+                                    if(member == userClass.userNickname) {
+                                        Log.d("aaaa", "member3 = $member")
+                                        memberCheck = 0 //참여중이다
+                                    }
                                 }
                                 if(memberCheck == 1){
-                                    buttonReadPostDM.visibility = View.GONE
-                                    buttonReadPostSubmit.visibility = View.GONE
+                                    buttonReadPostDM.visibility = View.VISIBLE
+                                    buttonReadPostDM.isEnabled = false
+                                    buttonReadPostSubmit.visibility = View.VISIBLE
+                                    buttonReadPostSubmit.isEnabled = false
                                     buttonReadPostMoveChat.visibility = View.GONE
-                                    buttonReadPostReview.visibility = View.VISIBLE
+                                    buttonReadPostReview.visibility = View.GONE
                                     if(tripPostWriterEmail != userClass.userEmail){
                                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
@@ -301,12 +310,10 @@ class ReadPostFragment : Fragment() {
                                     }
                                 }
                                 else{
-                                    buttonReadPostDM.visibility = View.VISIBLE
-                                    buttonReadPostDM.isEnabled = false
-                                    buttonReadPostSubmit.visibility = View.VISIBLE
-                                    buttonReadPostSubmit.isEnabled = false
+                                    buttonReadPostDM.visibility = View.GONE
+                                    buttonReadPostSubmit.visibility = View.GONE
                                     buttonReadPostMoveChat.visibility = View.GONE
-                                    buttonReadPostReview.visibility = View.GONE
+                                    buttonReadPostReview.visibility = View.VISIBLE
                                     if(tripPostWriterEmail != userClass.userEmail){
                                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false

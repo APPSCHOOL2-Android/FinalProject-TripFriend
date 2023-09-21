@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.home
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.UiSettings
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
@@ -22,7 +24,10 @@ import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentHomeMapBinding
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.HomeViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     lateinit var fragmentHomeMapBinding: FragmentHomeMapBinding
@@ -87,6 +92,8 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                     MarkerOptions()
                         .position(latLng)
                         .title(location.tripPostTitle)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_20px))
                 )
                 marker?.tag = location
 
@@ -99,6 +106,9 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     /** Called when the user clicks a marker.  */
     override fun onMarkerClick(marker: Marker): Boolean {
+        val sharedPreferences =
+            mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         val markerInfo: TripPost = marker.tag as TripPost
 
@@ -113,6 +123,24 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
                     markerInfo.tripPostWriterEmail
                 ) // 작성자 이메일
                 newBundle.putString("tripPostDocumentId", markerInfo.tripPostDocumentId)   // 문서아이디
+
+                val currentDate = LocalDate.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                val formattedDate = currentDate.format(formatter)
+
+                if(markerInfo.tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
+                    if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                        newBundle.putString("viewState", "Pass")
+                    } else {
+                        newBundle.putString("viewState", "InProgress")
+                    }
+                } else {    // 미 참여
+                    if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                        newBundle.putString("viewState", "HomeListPass")
+                    } else {
+                        newBundle.putString("viewState", "HomeList")
+                    }
+                }
 
                 mainActivity.replaceFragment(MainActivity.HOME_MAIN_FRAGMENT, true, false, null)
                 mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
