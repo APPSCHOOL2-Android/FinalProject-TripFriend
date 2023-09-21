@@ -3,6 +3,7 @@ package com.test.tripfriend.repository
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.test.tripfriend.dataclassmodel.TripRequest
 import kotlinx.coroutines.tasks.await
 
 class TripRequestRepository {
@@ -34,5 +35,10 @@ class TripRequestRepository {
         firestore.collection("TripRequest")
             .document(tripRequestDocumentId)
             .delete().await()
+    }
+
+    suspend fun setTripRequest(tripRequest : TripRequest){
+        firestore.collection("TripRequest")
+            .add(tripRequest).await()
     }
 }

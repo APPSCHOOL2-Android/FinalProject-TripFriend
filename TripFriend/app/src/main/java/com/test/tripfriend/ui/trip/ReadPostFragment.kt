@@ -16,16 +16,20 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom
+import com.test.tripfriend.dataclassmodel.TripRequest
 import com.test.tripfriend.repository.PersonalChatRepository
+import com.test.tripfriend.repository.TripRequestRepository
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
+import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
 
 class ReadPostFragment : Fragment() {
@@ -37,6 +41,7 @@ class ReadPostFragment : Fragment() {
 
     val personalChatRepository = PersonalChatRepository()
     val tripPostRepository = TripPostRepository()
+    val tripRequestRepository = TripRequestRepository()
 
     var likedCheck = false
 
@@ -300,33 +305,50 @@ class ReadPostFragment : Fragment() {
 
             //동행 신청 버튼
             buttonReadPostSubmit.setOnClickListener {
-                //다이얼로그 띄움
-                val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
-                builder.run {
-                    val dialogBinding = DialogSubmitBinding.inflate(layoutInflater)
-                    setTitle("동행 신청하기")
-                    setMessage("동행 신청을 위한 자기소개를 해주세요")
 
-                    // 새로운 뷰를 설정한다.
-                    builder.setView(dialogBinding.root)
+                if(tripPostViewModel.tripPostList.value?.tripPostMemberList!!.size < tripPostViewModel.tripPostList.value?.tripPostMemberCount!!){
+                    //다이얼로그 띄움
+                    val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
+                    builder.run {
+                        val dialogBinding = DialogSubmitBinding.inflate(layoutInflater)
+                        setTitle("동행 신청하기")
+                        setMessage("동행 신청을 위한 자기소개를 해주세요")
 
-                    dialogBinding.editTextInputSelfIntroduce.requestFocus()
+                        // 새로운 뷰를 설정한다.
+                        builder.setView(dialogBinding.root)
 
-                    thread {
-                        SystemClock.sleep(500)
-                        val imm = mainActivity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.showSoftInput(dialogBinding.editTextInputSelfIntroduce, 0)
+                        dialogBinding.editTextInputSelfIntroduce.requestFocus()
+
+                        thread {
+                            SystemClock.sleep(500)
+                            val imm = mainActivity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.showSoftInput(dialogBinding.editTextInputSelfIntroduce, 0)
+                        }
+
+                        builder.setPositiveButton("신청") { dialogInterface: DialogInterface, i: Int ->
+
+                            // 입력한 내용을 가져온다.
+                            val requestContent = dialogBinding.editTextInputSelfIntroduce.text.toString()
+                            val requestReceiverEmail = userViewModel.user.value?.userEmail!!
+                            val requestWriterEmail = mainActivity.userClass.userEmail
+                            val requestPostId = tripPostDocumentId
+
+                            val tripRequest = TripRequest(requestPostId, requestWriterEmail,
+                                requestReceiverEmail, requestContent, "대기중")
+
+                            runBlocking {
+                                tripRequestRepository.setTripRequest(tripRequest)
+                            }
+                        }
+                        builder.setNegativeButton("취소", null)
+
+                        builder.show()
                     }
-
-                    builder.setPositiveButton("신청") { dialogInterface: DialogInterface, i: Int ->
-                        // 입력한 내용을 가져온다.
-                        val str1 = dialogBinding.editTextInputSelfIntroduce.text.toString()
-                        textViewReadPostToolbarTitle.text = str1
-                    }
-                    builder.setNegativeButton("취소", null)
-
-                    builder.show()
                 }
+                else{
+                    Snackbar.make(fragmentReadPostBinding.root, "모집 인원이 다 찬 동행입니다.", Snackbar.LENGTH_SHORT).show()
+                }
+
             }
 
             //그룹 채팅으로 이동 버튼
