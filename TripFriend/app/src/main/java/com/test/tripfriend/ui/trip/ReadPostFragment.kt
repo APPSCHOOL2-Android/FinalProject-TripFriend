@@ -120,6 +120,8 @@ class ReadPostFragment : Fragment() {
                 newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
                 newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
                 newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
+                newBundle.putString("userName", userClass.userName)
+                newBundle.putString("userProfile", userClass.userProfilePath)
 
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
                     tripPostViewModel.getTargetUserProfileImage(tripPost.tripPostImage)
@@ -150,7 +152,6 @@ class ReadPostFragment : Fragment() {
                 }
             }
         }
-
 
         // 동행글 이미지 처리
         tripPostViewModel.tripPostImage.observe(viewLifecycleOwner) { uri ->
@@ -224,11 +225,15 @@ class ReadPostFragment : Fragment() {
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.VISIBLE
                             buttonReadPostReview.visibility = View.GONE
+
                         } else {
                             buttonReadPostDM.visibility = View.VISIBLE
                             buttonReadPostSubmit.visibility = View.VISIBLE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.GONE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
+                            toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                         }
                     }
                     "HomeListPass" -> { // 지난 동행
@@ -237,14 +242,18 @@ class ReadPostFragment : Fragment() {
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.VISIBLE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                         } else {
                             buttonReadPostDM.visibility = View.GONE
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.GONE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
+                            toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                         }
                     }
-
                 }
 
 //                // 메뉴를 보이게 하려면

@@ -41,6 +41,8 @@ class AccompanyRegisterFragment3 : Fragment() {
 
     var documentId = ""
 
+    var member = mutableListOf<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -119,6 +121,8 @@ class AccompanyRegisterFragment3 : Fragment() {
 
                 }
 
+                member.add(userClass.userNickname)
+
                 chipGender[0] = chipGender1.isChecked
                 chipGender[1] = chipGender2.isChecked
 
@@ -161,7 +165,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                     val tripPost = TripPost(
                         userClass.userEmail,
                         title,
-                        null,
+                        member,
                         people!!.toInt(),
                         postImagePath,
                         date,

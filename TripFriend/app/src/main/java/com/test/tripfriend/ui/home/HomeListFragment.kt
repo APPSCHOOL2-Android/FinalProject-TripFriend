@@ -146,16 +146,8 @@ class HomeListFragment : Fragment() {
                     newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
 
-                    Log.d("qwer", "formattedDate : ${formattedDate}")
-                    Log.d("qwer", "tripPostDate : ${homePostItemList[adapterPosition].tripPostDate}")
-                    Log.d("qwer", "userEmail : ${userClass.userEmail}")
-                    Log.d("qwer", "tripPostMemberList : ${homePostItemList[adapterPosition].tripPostMemberList}")
-                    Log.d("qwer", "tripPostMemberList : 지난 동행${homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate}")
-
-                    if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userEmail) == true) {   // 참여중인 동행글인 경우
-                        Log.d("qwer", "아부다비는 여기로")
+                    if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
                         if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                            Log.d("qwer", "아부다비는 여기로 가야지")
                             newBundle.putString("viewState", "Pass")
                         } else {
                             newBundle.putString("viewState", "InProgress")
