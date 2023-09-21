@@ -112,7 +112,7 @@ class ReceivedNotificationFragment : Fragment() {
                 //수락 버튼 클릭 이벤트
                 buttonNotificationRowAccept.setOnClickListener{
                     //동행글의 모집 인원 수와 현재 멤버 수를 비교해서 추가여부 가림
-                    if(currentTripRequestPosts[adapterPosition].tripPostMemberList?.size!! < currentTripRequestPosts[adapterPosition].tripPostMemberCount - 1){
+                    if(currentTripRequestPosts[adapterPosition].tripPostMemberList?.size!! < currentTripRequestPosts[adapterPosition].tripPostMemberCount){
 
                         createDialog("동행 요청 수락", "요청을 수락하면 등록하신 동행글 단체 채팅방에 해당 유저가 초대됩니다.", "수락")
                         {
