@@ -42,10 +42,9 @@ class ReviewFragment : Fragment() {
         fragmentReviewBinding = FragmentReviewBinding.inflate(layoutInflater)
 
         //여기서 넘어온 멤버 리스트 번들값을 받고 전역 변수들 초기화한다.
-//        memberList = arguments?.getStringArrayList("")!!
-        memberList = arrayListOf<String>("이일팔구", "에이비씨", "jinjinzara")
-        myEmail="sori2189@naver.com"
-        tripPostDocumentId="WHlBX3X8UfwxmMmDaC0D"
+        memberList = arguments?.getStringArrayList("tripPostMemberList")!!
+        myEmail = mainActivity.userClass.userEmail
+        tripPostDocumentId = arguments?.getString("tripPostDocumentId")!!
 
         reviewViewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
         reviewViewModel.run {
@@ -59,12 +58,12 @@ class ReviewFragment : Fragment() {
                 mainActivity.removeFragment(MainActivity.REVIEW_FRAGMENT)
                 //화면 종료(리무브)
             }
-            //번들로 넘어온 리스트로 대체해야함()
-            getUserInfo(memberList, "이일팔구")
+
+            getUserInfo(memberList, mainActivity.userClass.userNickname)
         }
 
         fragmentReviewBinding.run {
-            textViewReviewPostTitle.text = "화성 여행\n동행자 리뷰"
+            textViewReviewPostTitle.text = "${arguments?.getString("tripPostTitle") ?:""}\n동행자 리뷰"
             materialToolbar2.run {
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 //백버튼 색깔 지정
