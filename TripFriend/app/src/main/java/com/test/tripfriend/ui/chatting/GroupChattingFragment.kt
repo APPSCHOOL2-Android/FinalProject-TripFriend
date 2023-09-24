@@ -121,8 +121,17 @@ class GroupChattingFragment : Fragment() {
             itemList[position].roomId?.let { groupChatViewModel.fetchChangeInfo(it) }
             holder.textViewRowGroupChattingTitle.text = "${itemList[position].tripPostTitle}"
             holder.textViewRowGroupChattingNumber.text = "${itemList[position].memberCount}"
-            holder.textViewRowGroupChattingMessage.text = "${itemList[position].lastChatContent}"
-            holder.textViewRowGroupChattingDate.text = "${itemList[position].lastChatDate}"
+            if(itemList[position].lastChatContent==null||itemList[position].lastChatContent=="null"){
+                holder.textViewRowGroupChattingMessage.text = ""
+            }else{
+                holder.textViewRowGroupChattingMessage.text = "${itemList[position].lastChatContent}"
+            }
+            if(itemList[position].lastChatDate==null||itemList[position].lastChatDate=="null"){
+                holder.textViewRowGroupChattingDate.text=""
+            }else{
+                holder.textViewRowGroupChattingDate.text = "${itemList[position].lastChatDate}"
+            }
+
         }
     }
 
