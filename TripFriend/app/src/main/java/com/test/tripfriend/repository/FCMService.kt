@@ -26,7 +26,7 @@ interface FCMService {
 }
 
 // FCM 알림 요청 데이터 클래스
-data class FCMRequest(val data: Notification, val to: String)
+data class FCMRequest(val data: Map<String, String>, val to: String)
 
 // 알림 내용 데이터 클래스
 data class Notification(val title: String, val body: String)
@@ -45,13 +45,19 @@ fun createFCMService(): FCMService {
 // FCM 메시지 전송
 suspend fun sendFCMMessage(fcmService: FCMService, title: String, body: String, to: String): Any?{
     val notification = Notification(title, body)
-    val request = FCMRequest(notification, to) //token
+    val request = FCMRequest(
+        data = mapOf(
+            "title" to title,
+            "body" to body
+        ), to
+    ) //token
 
     try{
         val response : Response<Any> = fcmService.sendFCM("application/json", "key=AAAA5S5mCz0:APA91bFw9XnXZt3q3l3O6wHIjipYumL_OrWW00O9JUU1hsyicqtMJQiKCR5DoSZwT4nLfMdZt6u4Fdw3-PdSXcfHxCj8zQADeIBxWfV7wyXnv-N4oClEdBD8tgNqUG2e4xA4ZAagfafz",request)
 
         if (response.isSuccessful) {
             Log.d("success", "FCM message sent successfully.")
+            Log.d("mentor", response.body().toString())
             return response.body()
         } else {
             Log.d("failed", "Failed to send FCM message. Response code: ${response.code()}")

@@ -42,6 +42,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         if(message.data.isNotEmpty()){
+            Log.d("message", message.data["title"].toString())
+            Log.d("message", message.data["body"].toString())
             // 알림 표시
             sendNotification(message.data)
         }
@@ -55,11 +57,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             if(channel==null){
                 val newChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
                 newChannel.enableVibration(true)
-                newChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null)
+                //newChannel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), null)
                 notificationManager.createNotificationChannel(newChannel)
-                val requestCode = UUID.randomUUID().hashCode()
-                notificationManager.notify(0, notificationBuilder.build())
             }
+            val requestCode = UUID.randomUUID().hashCode()
+            notificationManager.notify(requestCode, notificationBuilder.build())
         }
     }
 
